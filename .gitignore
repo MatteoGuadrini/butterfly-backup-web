@@ -37,3 +37,6 @@ site
 # IDE
 .vscode/*
 .idea/*
+
+# Django ignore
+*.sqlite3
