@@ -8,16 +8,25 @@ build-backend = 'setuptools.build_meta'
 name = 'butterfly-backup-web'
 version = '0.0.1'
 readme = 'README.md'
-license = {text = 'GNU General Public License v3 (GPLv3)'}
-authors = [{name = 'matteoguadrini', email = 'matteoguadrini@github.com'}]
-maintainers = [{name = 'matteoguadrini', email = 'matteoguadrini@github.com'}]
-description = 'A simple but structured Python project'
+license = { text = 'GNU General Public License v3 (GPLv3)' }
+authors = [{ name = 'Matteo Guadrini', email = 'matteo.guadrini@hotmail.it' }]
+maintainers = [
+    { name = 'Matteo Guadrini', email = 'matteo.guadrini@hotmail.it' },
+]
+description = 'Django web interface for Butterfly Backup'
 requires-python = '>=3.13'
-classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"]
-dependencies = ["django", "django-bootstrap-v5"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+dependencies = [
+    "django",
+    "django-bootstrap-v5",
+    "Butterfly-Backup@git+https://github.com/MatteoGuadrini/Butterfly-Backup",
+]
 
 [project.urls]
-homepage = 'https://butterfly-backup-web.org/'
-documentation = 'https://docs.butterfly-backup-web.org/'
+homepage = 'https://matteoguadrini.github.io/butterfly-backup-web/'
+documentation = 'https://butterfly-backup-web.readthedocs.io/en/latest/'
 repository = 'https://github.com/matteoguadrini/butterfly-backup-web'
 changelog = 'https://github.com/matteoguadrini/butterfly-backup-web/CHANGES.md'
