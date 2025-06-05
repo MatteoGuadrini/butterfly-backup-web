@@ -2,10 +2,44 @@
 
 # Welcome to butterfly-backup-web
 
+This is a web interface to [Butterfly Backup](https://github.com/MatteoGuadrini/Butterfly-Backup) command line.
+
 ## Install butterfly-backup-web
+
 ```console
-pip install .
+git clone https://github.com/MatteoGuadrini/butterfly-backup-web.git
+cd butterfly-backup-web
+pip install . --upgrade
 ```
 
+## Open source
+Butterfly Backup is an open source project. Any contribution, It's welcome.
+
+**A great thanks**.
+
+For donations, press this
+
+For me
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/guos)
+
+For [Telethon](http://www.telethon.it/)
+
+The Telethon Foundation is a non-profit organization recognized by the Ministry of University and Scientific and Technological Research.
+They were born in 1990 to respond to the appeal of patients suffering from rare diseases.
+Come today, we are organized to dare to listen to them and answers, every day of the year.
+
+[Adopt the future](https://www.ioadottoilfuturo.it/)
+
 ## Acknowledgments
-Thanks Python Community!
+
+Thanks to Mark Lutz for writing the _Learning Python_ and _Programming Python_ books that make up my python foundation.
+
+Thanks to Kenneth Reitz and Tanya Schlusser for writing the _The Hitchhiker’s Guide to Python_ books.
+
+Thanks to Dane Hillard for writing the _Practices of the Python Pro_ books.
+
+Special thanks go to my wife, who understood the hours of absence for this development. 
+Thanks to my children, for the daily inspiration they give me and to make me realize, that life must be simple.
+
+Thanks Python!
