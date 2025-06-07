@@ -6,12 +6,15 @@
 butterfly-backup-web documentation
 ==================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+Presentation
+------------
+
+`Butterfly Backup <https://github.com/MatteoGuadrini/Butterfly-Backup>`__ is a modern backup program that can back up your files. It is a command line tool.
+
+``butterfly-backup-web`` is a web interface of the Butterfly Backup command line tool.
 
