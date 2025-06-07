@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'butterfly-backup-web'
-copyright = "2025, ''"
-author = "''"
+copyright = "2025, 'Matteo Guadrini'"
+author = "'Matteo Guadrini'"
 
 version = "'0.0.1'"
 release = "'0.0.1'"
