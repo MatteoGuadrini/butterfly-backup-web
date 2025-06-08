@@ -18,3 +18,5 @@ Presentation
 
 ``butterfly-backup-web`` is a web interface of the Butterfly Backup command line tool.
 
+.. warning::
+    This project is under development.
