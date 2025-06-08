@@ -40,3 +40,4 @@ site
 
 # Django ignore
 *.sqlite3
+*.db
