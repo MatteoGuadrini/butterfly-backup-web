@@ -15,4 +15,4 @@ RUN adduser --disabled-password butterfly-backup-web_user
 USER butterfly-backup-web_user
 
 # Run package
-CMD python -m butterfly-backup-web
+CMD python -m butterfly-backup-web runserver
