@@ -1,0 +1,15 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<h2>Log In</h2>
+<form method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      Log-in
+    </button>
+  {% endbuttons %}
+  
+</form>
