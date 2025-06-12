@@ -2,14 +2,14 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
-<h2>Log In</h2>
-<form method="post">
+{% block title %}Login to Butterfly Backup{% endblock %}
+<br>
+{% bootstrap_messages %}
+<br>
+{% block content %}
+<form method="post" class="form-control">
   {% csrf_token %}
-  {% bootstrap_form form %}
-  {% buttons %}
-    <button type="submit" class="btn btn-primary">
-      Log-in
-    </button>
-  {% endbuttons %}
-  
+  {% bootstrap_form form field_class="col-md-3" %}
+  {% buttons submit='Log-in' reset="Cancel" %}{% endbuttons %}
 </form>
+{% endblock %}
