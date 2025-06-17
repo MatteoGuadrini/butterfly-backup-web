@@ -1,1 +1,34 @@
-{% include menu %}
+{% include "menu.html" %}
+
+{{ value|linebreaks }}
+{% block content %}
+
+  <h3>Catalog: {{ catalog }}</h3>
+  {{ value|linebreaks }}
+  
+
+      <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Backup id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">OS</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for section, value in backups.items %}
+            <tr>
+            <td>{{ section }}</td>
+            <td>{{ value.name }}</td>
+            <td>{{ value.type }}</td>
+            <td>{{ value.os }}</td>
+            <td>{{ value.timestamp }}</td>
+            <td>{{ value.status }}</td>
+            </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
