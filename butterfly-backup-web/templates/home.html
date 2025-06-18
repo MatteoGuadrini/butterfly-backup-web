@@ -3,11 +3,15 @@
 {{ value|linebreaks }}
 {% block content %}
 
-  <h3>Catalog: {{ catalog }}</h3>
-  {{ value|linebreaks }}
-  
+<h3>Catalog: {{ catalog }}</h3>
+{{ value|linebreaks }}
 
-      <table class="table table-striped">
+<script>
+$("[data-toggle=popover]")
+.popover({html:true})
+</script>
+
+<table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">Backup id</th>
@@ -20,14 +24,20 @@
   </thead>
   <tbody>
     {% for section, value in backups.items %}
-            <tr>
-            <td>{{ section }}</td>
-            <td>{{ value.name }}</td>
-            <td>{{ value.type }}</td>
-            <td>{{ value.os }}</td>
-            <td>{{ value.timestamp }}</td>
-            <td>{{ value.status }}</td>
-            </tr>
+      {% if value.status == "23" or value.status == "24" %}
+    <tr class="table-warning">
+      {% elif value.status != "0" %}
+    <tr class="table-danger">
+      {% else %}
+    <tr>
+      {% endif %}
+      <td><a href="#" role="button" class="btn popovers" data-toggle="popover" title="" data-content="test content <a href='' title='test add link'>link on content</a>" data-original-title="test title">{{ section }}</a></td>
+      <td>{{ value.name }}</td>
+      <td>{{ value.type }}</td>
+      <td>{{ value.os }}</td>
+      <td>{{ value.timestamp }}</td>
+      <td>{{ value.status }}</td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
