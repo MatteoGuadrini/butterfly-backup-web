@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.contrib.auth.decorators import login_required
 from bbweb.settings import CATALOG_PATH
 from bb import read_catalog
 import os
@@ -12,6 +13,7 @@ class CatalogError(Exception): ...
 # endregion
 
 
+@login_required
 def home(request):
     catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
     if not os.path.exists(catalog_file):
