@@ -13,26 +13,59 @@ class CatalogError(Exception): ...
 # endregion
 
 
-@login_required
-def home(request):
+# region functions
+def get_catalog():
     catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
     if not os.path.exists(catalog_file):
         raise CatalogError(f"catalog doesn't exists: {catalog_file}")
-    backups = dict()
     config = read_catalog(catalog_file)
+    return config
+
+
+# endregion
+
+
+# region views
+@login_required
+def home(request):
+    config = get_catalog()
+    backups = dict()
     for section in config.sections():
         backups[section] = {
             "name": config.get(section, "name", fallback=None),
             "type": config.get(section, "type", fallback=None),
             "os": config.get(section, "os", fallback=None),
             "timestamp": config.get(section, "timestamp", fallback=None),
-            "start": config.get(section, "start", fallback=None),
-            "end": config.get(section, "end", fallback=None),
             "status": config.get(section, "status", fallback="0"),
         }
     template = loader.get_template("home.html")
     context = {
         "backups": backups,
-        "catalog": catalog_file,
+        "catalog": CATALOG_PATH,
     }
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def details(request, section):
+    config = get_catalog()
+    backup = {
+        "id": section,
+        "name": config.get(section, "name", fallback=None),
+        "type": config.get(section, "type", fallback=None),
+        "os": config.get(section, "os", fallback=None),
+        "timestamp": config.get(section, "timestamp", fallback=None),
+        "start": config.get(section, "start", fallback=None),
+        "end": config.get(section, "end", fallback=None),
+        "status": config.get(section, "status", fallback="0"),
+        "archived": config.get(section, "archived", fallback=False),
+        "cleaned": config.get(section, "cleaned", fallback=False),
+    }
+    template = loader.get_template("details.html")
+    context = {
+        "backup": backup,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+# endregion
