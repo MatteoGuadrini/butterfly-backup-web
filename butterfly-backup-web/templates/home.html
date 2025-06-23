@@ -3,13 +3,8 @@
 {{ value|linebreaks }}
 {% block content %}
 
-<h3>Catalog: {{ catalog }}</h3>
+<h4>Catalog: {{ catalog }}</h4>
 {{ value|linebreaks }}
-
-<script>
-$("[data-toggle=popover]")
-.popover({html:true})
-</script>
 
 <table class="table table-striped">
   <thead>
@@ -29,9 +24,13 @@ $("[data-toggle=popover]")
       {% elif value.status != "0" %}
     <tr class="table-danger">
       {% else %}
-    <tr>
+    <tr class="table-success">
       {% endif %}
-      <td><a href="#" role="button" class="btn popovers" data-toggle="popover" title="" data-content="test content <a href='' title='test add link'>link on content</a>" data-original-title="test title">{{ section }}</a></td>
+      <td><a href="details/{{ section }}" 
+             role="button" 
+             class="color-main-link">
+             {{ section }}
+      </a></td>
       <td>{{ value.name }}</td>
       <td>{{ value.type }}</td>
       <td>{{ value.os }}</td>
