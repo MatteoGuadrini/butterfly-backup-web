@@ -1,0 +1,47 @@
+{% include "menu.html" %}
+
+{{ value|linebreaks }}
+{% block content %}
+
+<h4>Catalog: {{ catalog }}</h4>
+{{ value|linebreaks }}
+
+<table id="catalog" class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Backup id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">OS</th>
+      <th scope="col">Timestamp</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for section, value in backups.items %}
+      {% if value.status == "23" or value.status == "24" %}
+    <tr class="table-warning">
+      {% elif value.status != "0" %}
+    <tr class="table-danger">
+      {% else %}
+    <tr class="table-success">
+      {% endif %}
+      <td><a href="details/{{ section }}" 
+             role="button" 
+             class="color-main-link">
+             {{ section }}
+      </a></td>
+      <td>{{ value.name }}</td>
+      <td>{{ value.type }}</td>
+      <td>{{ value.os }}</td>
+      <td>{{ value.timestamp }}</td>
+      <td>{{ value.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  new DataTable('#catalog');
+</script>
+{% endblock %}

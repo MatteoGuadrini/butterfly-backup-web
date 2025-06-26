@@ -14,7 +14,7 @@ maintainers = [
     { name = 'Matteo Guadrini', email = 'matteo.guadrini@hotmail.it' },
 ]
 description = 'Django web interface for Butterfly Backup'
-requires-python = '>=3.13'
+requires-python = '>=3.8'
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",

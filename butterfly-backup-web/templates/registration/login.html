@@ -1,0 +1,15 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block title %}Login to Butterfly Backup{% endblock %}
+<br>
+{% bootstrap_messages %}
+<br>
+{% block content %}
+<form method="post" class="form-control">
+  {% csrf_token %}
+  {% bootstrap_form form field_class="col-md-3" %}
+  {% buttons submit='Log-in' reset="Cancel" %}{% endbuttons %}
+</form>
+{% endblock %}

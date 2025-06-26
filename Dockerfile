@@ -2,6 +2,14 @@
 
 FROM python:alpine
 
+# Install dependencies
+RUN apk add git 
+
+# Django global variables
+ENV DJANGO_SUPERUSER_PASSWORD="Admin000!"
+ENV DJANGO_SUPERUSER_USERNAME="admin"
+ENV DJANGO_SUPERUSER_EMAIL="admin@bbweb.com"
+
 # Copy the Python package
 COPY butterfly-backup-web /butterfly-backup-web/butterfly-backup-web
 COPY pyproject.toml /butterfly-backup-web
@@ -10,9 +18,14 @@ WORKDIR /butterfly-backup-web
 # Install dependencies
 RUN pip install .
 
+# Create Django software structure
+RUN python -m butterfly-backup-web migrate && \
+    python -m butterfly-backup-web createsuperuser --no-input
+
 # Safe user
-RUN adduser --disabled-password butterfly-backup-web_user
+RUN adduser --disabled-password butterfly-backup-web_user && \
+    chown butterfly-backup-web_user:butterfly-backup-web_user /butterfly-backup-web -R
 USER butterfly-backup-web_user
 
 # Run package
-CMD python -m butterfly-backup-web
+CMD python -m butterfly-backup-web runserver 0.0.0.0:8080
