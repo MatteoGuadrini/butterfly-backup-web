@@ -9,10 +9,58 @@ This is a web interface to [Butterfly Backup](https://github.com/MatteoGuadrini/
 
 ## Install Butterfly Backup Web
 
+To install locally, run this:
+
 ```console
 git clone https://github.com/MatteoGuadrini/butterfly-backup-web.git
 cd butterfly-backup-web
 pip install . --upgrade
+```
+
+> [!NOTE]  
+> Installing Butterfly Backup Web, will be installed also the command line interface, commonly named `bb`.
+
+## Docker
+
+Butterfly Backup Web is distribuited with containerization files. You can build the image:
+
+```console
+docker build . -t bbweb:0.0.1
+```
+
+And run with Docker/Podman/Kubernetes
+
+```console
+# Interactive server
+docker run -it --rm -v /backup_catalog/:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.0.1
+# Daemon server
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.0.1
+```
+
+The build is distribuited with a default username and password:
+
+```env
+DJANGO_SUPERUSER_PASSWORD="Admin000!"
+DJANGO_SUPERUSER_USERNAME="admin"
+DJANGO_SUPERUSER_EMAIL="admin@bbweb.com"
+```
+
+you can change user and/or password mapping the enviroment variables:
+
+```console
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" localhost/bbweb:0.0.1
+```
+
+> [!NOTE]  
+> When the login is done, you can change the password into Django admin page: `http://127.0.0.1:8080/admin`.
+
+If you want preserve the data, create a volume and map to container:
+
+```console
+# Create a volume
+docker volume create bbweb
+# Run container
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.0.1
 ```
 
 ## Open source
