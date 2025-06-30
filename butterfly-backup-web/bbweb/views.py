@@ -60,11 +60,29 @@ def details(request, section):
         "status": config.get(section, "status", fallback="0"),
         "archived": config.get(section, "archived", fallback=False),
         "cleaned": config.get(section, "cleaned", fallback=False),
+        "path": config.get(section, "path", fallback=False),
     }
     template = loader.get_template("details.html")
     context = {
         "backup": backup,
     }
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def logs(request, section):
+    config = get_catalog()
+    template = loader.get_template("logs.html")
+    context = {}
+    extention = ".log"
+    for action in ("backup", "restore", "export"):
+        log_file = os.path.join(
+            config.get(section, "path", fallback="/"), f"{action}{extention}"
+        )
+        if os.path.isfile(log_file):
+            context[action] = open(log_file).read()
+    if not context:
+        context["no_log"] = "There are no logs."
     return HttpResponse(template.render(context, request))
 
 
