@@ -3,6 +3,7 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from bbweb.settings import CATALOG_PATH
 from bb import read_catalog
+from pathlib import Path
 import os
 
 
@@ -71,16 +72,27 @@ def details(request, section):
 
 @login_required
 def logs(request, section):
+    # Get whole catalog entries
     config = get_catalog()
     template = loader.get_template("logs.html")
     context = {}
     extention = ".log"
     for action in ("backup", "restore", "export"):
+        # Get path of specific section
         log_file = os.path.join(
             config.get(section, "path", fallback="/"), f"{action}{extention}"
         )
+        # Get part of path
+        section_path = Path(log_file)
+        section_root = section_path.parents[2]
+        # Check if catalog root is the same
+        if str(section_root) != CATALOG_PATH:
+            new_root = Path(CATALOG_PATH)
+            log_file = new_root.joinpath(section_path.relative_to(section_root))
+            print(section_root)
+            print(log_file)
         if os.path.isfile(log_file):
-            context[action] = open(log_file).read()
+            context[action] = open(log_file).read().replace("\n", "<br>")
     if not context:
         context["no_log"] = "There are no logs."
     return HttpResponse(template.render(context, request))
