@@ -76,11 +76,11 @@ def logs(request, section):
     config = get_catalog()
     template = loader.get_template("logs.html")
     context = {}
-    extention = ".log"
+    extension = ".log"
     for action in ("backup", "restore", "export"):
         # Get path of specific section
         log_file = os.path.join(
-            config.get(section, "path", fallback="/"), f"{action}{extention}"
+            config.get(section, "path", fallback="/"), f"{action}{extension}"
         )
         # Get part of path
         section_path = Path(log_file)
