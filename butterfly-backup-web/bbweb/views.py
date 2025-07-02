@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from bbweb.settings import CATALOG_PATH
+from bbweb.forms import BackupForm
 from bb import read_catalog
 from pathlib import Path
 import os
@@ -96,6 +98,33 @@ def logs(request, section):
     if not context:
         context["no_log"] = "There are no logs."
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def backup(request):
+    if request.method == "POST":
+        form = BackupForm(request.POST)
+        if form.is_valid():
+            data = {
+                # Process the form data
+                "computer": form.cleaned_data["computer"],
+                "user": form.cleaned_data["user"],
+                "port": form.cleaned_data["port"],
+                "mode": form.cleaned_data["mode"],
+                "data": form.cleaned_data["data"],
+                "type_": form.cleaned_data["type_"],
+                "retention_days": form.cleaned_data["retention_days"],
+                "retention_number": form.cleaned_data["retention_number"],
+                "compress": form.cleaned_data["compress"],
+                "skip_error": form.cleaned_data["skip_error"],
+                "checksum": form.cleaned_data["checksum"],
+                "acl": form.cleaned_data["acl"],
+                "retry": form.cleaned_data["retry"],
+                "wait": form.cleaned_data["wait"],
+            }
+    else:
+        form = BackupForm()
+    return render(request, "backup.html", {"form": form})
 
 
 # endregion
