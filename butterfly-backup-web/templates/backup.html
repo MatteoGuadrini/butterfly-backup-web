@@ -2,15 +2,11 @@
 
 {{ value|linebreaks }}
 {% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
 {% block content %}
-
     <form action="/backup/" method="post">
         {% csrf_token %}
-        {% bootstrap_form form field_class="col-md-3" %}
+        {% bootstrap_form form field_class="col-md-2" %}
         {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
     </form>
-
 {% endblock %}
