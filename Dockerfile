@@ -9,6 +9,8 @@ RUN apk add git
 ENV DJANGO_SUPERUSER_PASSWORD="Admin000!"
 ENV DJANGO_SUPERUSER_USERNAME="admin"
 ENV DJANGO_SUPERUSER_EMAIL="admin@bbweb.com"
+# Butterfly Backup variables
+ENV BB_CATALOG_PATH="/tmp/backup" 
 
 # Copy the Python package
 COPY butterfly-backup-web /butterfly-backup-web/butterfly-backup-web
@@ -16,7 +18,8 @@ COPY pyproject.toml /butterfly-backup-web
 WORKDIR /butterfly-backup-web
 
 # Install dependencies
-RUN pip install .
+RUN pip install . && \
+    mkdir -p ${BB_CATALOG_PATH}
 
 # Create Django software structure
 RUN python -m butterfly-backup-web migrate && \

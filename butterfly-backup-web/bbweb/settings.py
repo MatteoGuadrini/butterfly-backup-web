@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.conf import settings
+from os import environ
 
 # Butterfly Backup catalog
-CATALOG_PATH = "/tmp/backup"
+CATALOG_PATH = environ.get("BB_CATALOG_PATH", "/tmp/backup")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
