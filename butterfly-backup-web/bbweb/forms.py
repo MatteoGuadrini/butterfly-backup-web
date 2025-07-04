@@ -4,34 +4,34 @@ from django import forms
 class BackupForm(forms.Form):
     computer = forms.CharField(label="Computer name or ip", max_length=100)
     user = forms.CharField(label="Username", max_length=100, initial="root")
-    port = forms.IntegerField(label="SSH port number", initial=22)
+    port = forms.IntegerField(label="SSH port number", required=False)
     mode = forms.ChoiceField(
         choices=(
-            ("1", "full"),
-            ("2", "incremental"),
-            ("3", "differential"),
-            ("4", "mirror"),
+            ("full", "full"),
+            ("incremental", "incremental"),
+            ("differential", "differential"),
+            ("mirror", "mirror"),
         ),
         label="Mode",
         required=True,
-        initial="2",
+        initial="incremental",
     )
     data = forms.ChoiceField(
         choices=(
-            ("1", "user"),
-            ("2", "config"),
-            ("3", "application"),
-            ("4", "system"),
-            ("5", "log"),
+            ("user", "user"),
+            ("config", "config"),
+            ("application", "application"),
+            ("system", "system"),
+            ("log", "log"),
         ),
         label="Data",
         required=True,
     )
     type_ = forms.ChoiceField(
         choices=(
-            ("1", "unix"),
-            ("2", "macos"),
-            ("3", "windows"),
+            ("unix", "unix"),
+            ("macos", "macos"),
+            ("windows", "windows"),
         ),
         label="OS type",
         required=True,

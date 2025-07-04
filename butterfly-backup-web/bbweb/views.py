@@ -2,10 +2,12 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from bbweb.settings import CATALOG_PATH
 from bbweb.forms import BackupForm
 from bb import read_catalog
 from pathlib import Path
+import subprocess
 import os
 
 
@@ -110,7 +112,7 @@ def backup(request):
                 "computer": form.cleaned_data["computer"],
                 "user": form.cleaned_data["user"],
                 "port": form.cleaned_data["port"],
-                "mode": form.cleaned_data["mode"],
+                "mode": form.data["mode"],
                 "data": form.cleaned_data["data"],
                 "type_": form.cleaned_data["type_"],
                 "retention_days": form.cleaned_data["retention_days"],
@@ -122,6 +124,51 @@ def backup(request):
                 "retry": form.cleaned_data["retry"],
                 "wait": form.cleaned_data["wait"],
             }
+            # Compose mandatory command
+            cmds = [
+                "bb",
+                "backup",
+                "--destination",
+                CATALOG_PATH,
+                "--computer",
+                data.get("computer"),
+                "--user",
+                data.get("user"),
+                "--mode",
+                data.get("mode"),
+                "--data",
+                data.get("data"),
+                "--type",
+                data.get("type_"),
+            ]
+            # Add optional commands
+            if data.get("port"):
+                cmds.append("--ssh-port")
+                cmds.append(data.get("port"))
+            if data.get("retention_days"):
+                cmds.append("--retention")
+                cmds.append(data.get("retention_days"))
+                if data.get("retention_number"):
+                    cmds.append(data.get("retention_number"))
+            if data.get("compress"):
+                cmds.append("--compress")
+            if data.get("skip_error"):
+                cmds.append("--skip-error")
+            if data.get("checksum"):
+                cmds.append("--checksum")
+            if data.get("acl"):
+                cmds.append("--acl")
+            if data.get("retry"):
+                cmds.append("--retry")
+                cmds.append(data.get("retry"))
+                if data.get("wait"):
+                    cmds.append("--wait")
+                    cmds.append(data.get("wait"))
+            # Start subprocess
+            subprocess.run(
+                cmds, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3
+            )
+            messages.success(request, "Backup started. See catalog.")
     else:
         form = BackupForm()
     return render(request, "backup.html", {"form": form})
