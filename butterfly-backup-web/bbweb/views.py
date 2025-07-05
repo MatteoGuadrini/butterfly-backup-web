@@ -33,8 +33,17 @@ def get_catalog():
 # region views
 @login_required
 def home(request):
-    config = get_catalog()
     backups = dict()
+    template = loader.get_template("home.html")
+    context = {
+        "backups": backups,
+        "catalog": CATALOG_PATH,
+    }
+    try:
+        config = get_catalog()
+    except CatalogError as err:
+        messages.error(request, err)
+        return HttpResponse(template.render(context, request))
     for section in config.sections():
         backups[section] = {
             "name": config.get(section, "name", fallback=None),
@@ -43,11 +52,6 @@ def home(request):
             "timestamp": config.get(section, "timestamp", fallback=None),
             "status": config.get(section, "status", fallback="0"),
         }
-    template = loader.get_template("home.html")
-    context = {
-        "backups": backups,
-        "catalog": CATALOG_PATH,
-    }
     return HttpResponse(template.render(context, request))
 
 
