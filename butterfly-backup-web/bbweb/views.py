@@ -144,6 +144,7 @@ def backup(request):
                 data.get("data"),
                 "--type",
                 data.get("type_"),
+                "--log",
             ]
             # Add optional commands
             if data.get("port"):
@@ -169,10 +170,17 @@ def backup(request):
                     cmds.append("--wait")
                     cmds.append(data.get("wait"))
             # Start subprocess
-            subprocess.run(
-                cmds, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=3
-            )
-            messages.success(request, "Backup started. See catalog.")
+            try:
+                subprocess.run(
+                    cmds,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=3,
+                    check=True,
+                )
+                messages.success(request, "Backup started. See catalog.")
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Backup error: {err}.")
     else:
         form = BackupForm()
     return render(request, "backup.html", {"form": form})
