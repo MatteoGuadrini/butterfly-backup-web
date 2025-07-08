@@ -1,4 +1,6 @@
 {% include "menu.html" %}
+{% load bootstrap5 %}
+{% bootstrap_messages %}
 
 {{ value|linebreaks }}
 {% block content %}
@@ -42,6 +44,10 @@
 </table>
 
 <script>
-  new DataTable('#catalog');
+  var table = new DataTable('#catalog');
+  table
+    .column('4:visible')
+    .order('desc')
+    .draw();
 </script>
 {% endblock %}
