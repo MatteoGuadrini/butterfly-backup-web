@@ -43,12 +43,13 @@ The build is distribuited with a default username and password:
 DJANGO_SUPERUSER_PASSWORD="Admin000!"
 DJANGO_SUPERUSER_USERNAME="admin"
 DJANGO_SUPERUSER_EMAIL="admin@bbweb.com"
+BB_CATALOG_PATH="/tmp/backup"
 ```
 
 you can change user and/or password mapping the enviroment variables:
 
 ```console
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" localhost/bbweb:0.0.2
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.0.2
 ```
 
 > [!NOTE]  
