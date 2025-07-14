@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from bbweb.settings import CATALOG_PATH
-from bbweb.forms import BackupForm
+from bbweb.forms import BackupForm, RestoreForm
 from bb import read_catalog
 from pathlib import Path
 import subprocess
@@ -184,6 +184,82 @@ def backup(request):
     else:
         form = BackupForm()
     return render(request, "backup.html", {"form": form})
+
+
+@login_required
+def restore(request):
+    if request.method == "POST":
+        form = RestoreForm(request.POST)
+        if form.is_valid():
+            data = {
+                # Process the form data
+                "computer": form.cleaned_data["computer"],
+                "user": form.cleaned_data["user"],
+                "port": form.cleaned_data["port"],
+                "backup_id": form.cleaned_data["backup_id"],
+                "root_dir": form.cleaned_data["root_dir"],
+                "type_": form.cleaned_data["type_"],
+                "compress": form.cleaned_data["compress"],
+                "skip_error": form.cleaned_data["skip_error"],
+                "checksum": form.cleaned_data["checksum"],
+                "acl": form.cleaned_data["acl"],
+                "retry": form.cleaned_data["retry"],
+                "wait": form.cleaned_data["wait"],
+            }
+            # Compose mandatory command
+            cmds = [
+                "bb",
+                "restore",
+                "--destination",
+                CATALOG_PATH,
+                "--computer",
+                data.get("computer"),
+                "--user",
+                data.get("user"),
+                "--backup-id",
+                data.get("backup_id"),
+                "--type",
+                data.get("type_"),
+                "--log",
+            ]
+            # Add optional commands
+            if data.get("port"):
+                cmds.append("--ssh-port")
+                cmds.append(data.get("port"))
+            if data.get("mirror"):
+                cmds.append("--mirror")
+            if data.get("compress"):
+                cmds.append("--compress")
+            if data.get("skip_error"):
+                cmds.append("--skip-error")
+            if data.get("checksum"):
+                cmds.append("--checksum")
+            if data.get("acl"):
+                cmds.append("--acl")
+            if data.get("retry"):
+                cmds.append("--retry")
+                cmds.append(data.get("retry"))
+                if data.get("wait"):
+                    cmds.append("--wait")
+                    cmds.append(data.get("wait"))
+            # Start subprocess
+            try:
+                subprocess.run(
+                    cmds,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    timeout=3,
+                    check=True,
+                )
+                messages.success(
+                    request,
+                    f"Restore started. See logs of backup-id:{data.get('backup_id')}.",
+                )
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Restore error: {err}.")
+    else:
+        form = BackupForm()
+    return render(request, "restore.html", {"form": form})
 
 
 # endregion
