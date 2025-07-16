@@ -25,5 +25,6 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("details/<str:section>", views.details, name="details"),
     path("details/<str:section>/logs", views.logs, name="logs"),
-    path("backup/", views.backup, name="backup")
+    path("backup/", views.backup, name="backup"),
+    path("restore/", views.restore, name="restore"),
 ]

@@ -40,3 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 - None
+
+## [0.0.3] - 2025-07-15
+
+### Added
+- Add restore page
+- Add session age cookie
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None

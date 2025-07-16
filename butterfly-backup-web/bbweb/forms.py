@@ -46,3 +46,27 @@ class BackupForm(forms.Form):
     acl = forms.BooleanField(label="Preserve ACL", required=False)
     retry = forms.IntegerField(label="Retry number", required=False)
     wait = forms.IntegerField(label="Seconds of retry wait", required=False)
+
+
+class RestoreForm(forms.Form):
+    computer = forms.CharField(label="Computer name or ip", max_length=100)
+    backup_id = forms.CharField(label="Backup id", max_length=100)
+    root_dir = forms.CharField(label="Root directory", max_length=100, required=False)
+    user = forms.CharField(label="Username", max_length=100, initial="root")
+    port = forms.IntegerField(label="SSH port number", required=False)
+    type_ = forms.ChoiceField(
+        choices=(
+            ("unix", "unix"),
+            ("macos", "macos"),
+            ("windows", "windows"),
+        ),
+        label="OS type",
+        required=True,
+    )
+    compress = forms.BooleanField(label="Compress", required=False)
+    skip_error = forms.BooleanField(label="Skip error", required=False)
+    checksum = forms.BooleanField(label="Checksum", required=False)
+    acl = forms.BooleanField(label="Preserve ACL", required=False)
+    mirror = forms.BooleanField(label="Mirror", required=False)
+    retry = forms.IntegerField(label="Retry number", required=False)
+    wait = forms.IntegerField(label="Seconds of retry wait", required=False)
