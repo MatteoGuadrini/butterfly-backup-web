@@ -181,6 +181,8 @@ def backup(request):
                 messages.success(request, "Backup started. See catalog.")
             except subprocess.CalledProcessError as err:
                 messages.error(request, f"Backup error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
     else:
         form = BackupForm()
     return render(request, "backup.html", {"form": form})
@@ -257,8 +259,10 @@ def restore(request):
                 )
             except subprocess.CalledProcessError as err:
                 messages.error(request, f"Restore error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
     else:
-        form = BackupForm()
+        form = RestoreForm()
     return render(request, "restore.html", {"form": form})
 
 
