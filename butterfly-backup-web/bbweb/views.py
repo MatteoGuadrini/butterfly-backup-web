@@ -4,30 +4,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from bbweb.settings import CATALOG_PATH
-from bbweb.forms import BackupForm, RestoreForm
-from bb import read_catalog
+from bbweb.forms import BackupForm, RestoreForm, CatalogError, get_catalog
 from pathlib import Path
 import subprocess
 import os
-
-
-# region exceptions
-class CatalogError(Exception): ...
-
-
-# endregion
-
-
-# region functions
-def get_catalog():
-    catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
-    if not os.path.exists(catalog_file):
-        raise CatalogError(f"catalog doesn't exists: {catalog_file}")
-    config = read_catalog(catalog_file)
-    return config
-
-
-# endregion
 
 
 # region views

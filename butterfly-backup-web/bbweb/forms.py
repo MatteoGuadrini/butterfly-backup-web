@@ -1,4 +1,26 @@
+import os
 from django import forms
+from bb import read_catalog
+from bbweb.settings import CATALOG_PATH
+
+
+# region exceptions
+class CatalogError(Exception): ...
+
+
+# endregion
+
+
+# region functions
+def get_catalog():
+    catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
+    if not os.path.exists(catalog_file):
+        raise CatalogError(f"catalog doesn't exists: {catalog_file}")
+    config = read_catalog(catalog_file)
+    return config
+
+
+# endregion
 
 
 class BackupForm(forms.Form):
@@ -49,8 +71,13 @@ class BackupForm(forms.Form):
 
 
 class RestoreForm(forms.Form):
+    _catalog = tuple(
+        [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
+    )
     computer = forms.CharField(label="Computer name or ip", max_length=100)
-    backup_id = forms.CharField(label="Backup id", max_length=100)
+    backup_id = forms.ChoiceField(
+        choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
+    )
     root_dir = forms.CharField(label="Root directory", max_length=100, required=False)
     user = forms.CharField(label="Username", max_length=100, initial="root")
     port = forms.IntegerField(label="SSH port number", required=False)
