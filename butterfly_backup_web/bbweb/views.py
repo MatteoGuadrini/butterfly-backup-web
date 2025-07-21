@@ -3,11 +3,11 @@ from django.template import loader
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from bbweb.settings import CATALOG_PATH
-from bbweb.forms import BackupForm, RestoreForm, CatalogError, get_catalog
 from pathlib import Path
 import subprocess
 import os
+from .settings import CATALOG_PATH
+from .forms import BackupForm, RestoreForm, CatalogError, get_catalog
 
 
 # region views

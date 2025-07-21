@@ -10,9 +10,9 @@ from .__init__ import __version__
 from .manage import main
 
 
-print("name: butterfly-backup-web ")
+print("name: butterfly-backup-web")
 print(f"version: {__version__}")
 
 if __name__ == "__main__":
-    sys.path.append(os.path.join(os.getcwd(), "butterfly-backup-web"))
+    sys.path.append(os.path.join(os.getcwd(), "butterfly_backup_web"))
     main()

@@ -25,6 +25,16 @@ dependencies = [
     "Butterfly-Backup@git+https://github.com/MatteoGuadrini/Butterfly-Backup",
 ]
 
+[project.scripts]
+bbweb = "butterfly_backup_web.manage:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["butterfly_backup_web*"]
+
+[tool.setuptools.package-data]
+butterfly_backup_web = ['templates/*', 'templates/**/*']
+
 [project.urls]
 homepage = 'https://matteoguadrini.github.io/butterfly-backup-web/'
 documentation = 'https://butterfly-backup-web.readthedocs.io/en/latest/'

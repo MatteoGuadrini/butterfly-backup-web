@@ -1,7 +1,7 @@
 import os
 from django import forms
 from bb import read_catalog
-from bbweb.settings import CATALOG_PATH
+from .settings import CATALOG_PATH
 
 
 # region exceptions

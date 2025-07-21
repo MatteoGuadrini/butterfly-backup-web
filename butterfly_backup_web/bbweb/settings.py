@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from os import environ
+from importlib.util import find_spec
 
 # Butterfly Backup catalog
-CATALOG_PATH = environ.get("BB_CATALOG_PATH", "/tmp/backup")
+CATALOG_PATH = Path(environ.get("BB_CATALOG_PATH", "/tmp/backup"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,7 +57,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "bbweb.urls"
+ROOT_URLCONF = (
+    "butterfly_backup_web.bbweb.urls"
+    if find_spec("butterfly_backup_web")
+    else "bbweb.urls"
+)
 
 TEMPLATES = [
     {
@@ -74,7 +79,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "bbweb.wsgi.application"
+WSGI_APPLICATION = (
+    "butterfly_backup_web.bbweb.wsgi.application"
+    if find_spec("butterfly_backup_web")
+    else "bbweb.wsgi.application"
+)
 
 
 # Database
@@ -83,7 +92,7 @@ WSGI_APPLICATION = "bbweb.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "bb.db",
+        "NAME": CATALOG_PATH / "bbweb.db",
     }
 }
 
