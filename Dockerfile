@@ -13,7 +13,7 @@ ENV DJANGO_SUPERUSER_EMAIL="admin@bbweb.com"
 ENV BB_CATALOG_PATH="/tmp/backup" 
 
 # Copy the Python package
-COPY butterfly-backup-web /butterfly-backup-web/butterfly-backup-web
+COPY butterfly_backup_web /butterfly-backup-web/butterfly_backup_web
 COPY pyproject.toml /butterfly-backup-web
 WORKDIR /butterfly-backup-web
 
@@ -22,13 +22,13 @@ RUN pip install . && \
     mkdir -p ${BB_CATALOG_PATH}
 
 # Create Django software structure
-RUN python -m butterfly-backup-web migrate && \
-    python -m butterfly-backup-web createsuperuser --no-input
+RUN python -m butterfly_backup_web migrate && \
+    python -m butterfly_backup_web createsuperuser --no-input
 
 # Safe user
-RUN adduser --disabled-password butterfly-backup-web_user && \
-    chown butterfly-backup-web_user:butterfly-backup-web_user /butterfly-backup-web -R
-USER butterfly-backup-web_user
+RUN adduser --disabled-password butterfly_backup_web_user && \
+    chown butterfly_backup_web_user:butterfly_backup_web_user /butterfly-backup-web -R
+USER butterfly_backup_web_user
 
 # Run package
-CMD python -m butterfly-backup-web runserver 0.0.0.0:8080
+CMD python -m butterfly_backup_web runserver 0.0.0.0:8080
