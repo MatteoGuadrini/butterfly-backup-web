@@ -113,7 +113,7 @@ def backup(request):
                 "bb",
                 "backup",
                 "--destination",
-                CATALOG_PATH,
+                str(CATALOG_PATH),
                 "--computer",
                 data.get("computer"),
                 "--user",
@@ -155,8 +155,6 @@ def backup(request):
                     cmds,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    timeout=3,
-                    check=True,
                 )
                 messages.success(request, "Backup started. See catalog.")
             except subprocess.CalledProcessError as err:
@@ -193,7 +191,7 @@ def restore(request):
                 "bb",
                 "restore",
                 "--destination",
-                CATALOG_PATH,
+                str(CATALOG_PATH),
                 "--computer",
                 data.get("computer"),
                 "--user",
@@ -230,8 +228,6 @@ def restore(request):
                     cmds,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    timeout=3,
-                    check=True,
                 )
                 messages.success(
                     request,

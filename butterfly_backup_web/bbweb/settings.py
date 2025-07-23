@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from os import environ
+from os import environ, uname
 from importlib.util import find_spec
 
 # Butterfly Backup catalog
@@ -30,7 +30,7 @@ SECRET_KEY = "django-insecure-ne)d_cm&rh5mhll!pgasazhbpa_pzq*#w7dp!gc_7ztrtyy4@u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [uname().nodename, "localhost"]
 
 LOGIN_REDIRECT_URL = "/"
 
