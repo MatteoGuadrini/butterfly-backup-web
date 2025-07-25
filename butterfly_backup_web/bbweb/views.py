@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import os
 from .settings import CATALOG_PATH
-from .forms import BackupForm, RestoreForm, CatalogError, get_catalog
+from .forms import BackupForm, RestoreForm, ExportForm, CatalogError, get_catalog
 
 
 # region views
@@ -240,6 +240,74 @@ def restore(request):
     else:
         form = RestoreForm()
     return render(request, "restore.html", {"form": form})
+
+
+@login_required
+def export(request):
+    if request.method == "POST":
+        form = ExportForm(request.POST)
+        if form.is_valid():
+            data = {
+                # Process the form data
+                "backup_id": form.cleaned_data["backup_id"],
+                "export_path": form.cleaned_data["export_path"],
+                "cut": form.cleaned_data["cut"],
+                "compress": form.cleaned_data["compress"],
+                "skip_error": form.cleaned_data["skip_error"],
+                "checksum": form.cleaned_data["checksum"],
+                "acl": form.cleaned_data["acl"],
+                "retry": form.cleaned_data["retry"],
+                "wait": form.cleaned_data["wait"],
+            }
+            # Compose mandatory command
+            cmds = [
+                "bb",
+                "export",
+                "--destination",
+                str(CATALOG_PATH),
+                "--backup-id",
+                data.get("backup_id"),
+                "--destination",
+                data.get("export_path"),
+                "--log",
+            ]
+            # Add optional commands
+            if data.get("mirror"):
+                cmds.append("--mirror")
+            if data.get("compress"):
+                cmds.append("--compress")
+            if data.get("skip_error"):
+                cmds.append("--skip-error")
+            if data.get("checksum"):
+                cmds.append("--checksum")
+            if data.get("acl"):
+                cmds.append("--acl")
+            if data.get("cut"):
+                cmds.append("--cut")
+            if data.get("retry"):
+                cmds.append("--retry")
+                cmds.append(data.get("retry"))
+                if data.get("wait"):
+                    cmds.append("--wait")
+                    cmds.append(data.get("wait"))
+            # Start subprocess
+            try:
+                subprocess.run(
+                    cmds,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                messages.success(
+                    request,
+                    f"Export started. See logs of backup-id:{data.get('backup_id')}.",
+                )
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Export error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
+    else:
+        form = ExportForm()
+    return render(request, "export.html", {"form": form})
 
 
 # endregion
