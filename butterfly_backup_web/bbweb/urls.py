@@ -27,4 +27,5 @@ urlpatterns = [
     path("details/<str:section>/logs", views.logs, name="logs"),
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
+    path("export/", views.export, name="export"),
 ]
