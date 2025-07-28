@@ -3,31 +3,11 @@ from django.template import loader
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from bbweb.settings import CATALOG_PATH
-from bbweb.forms import BackupForm, RestoreForm
-from bb import read_catalog
 from pathlib import Path
 import subprocess
 import os
-
-
-# region exceptions
-class CatalogError(Exception): ...
-
-
-# endregion
-
-
-# region functions
-def get_catalog():
-    catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
-    if not os.path.exists(catalog_file):
-        raise CatalogError(f"catalog doesn't exists: {catalog_file}")
-    config = read_catalog(catalog_file)
-    return config
-
-
-# endregion
+from .settings import CATALOG_PATH
+from .forms import BackupForm, RestoreForm, ExportForm, CatalogError, get_catalog
 
 
 # region views
@@ -133,7 +113,7 @@ def backup(request):
                 "bb",
                 "backup",
                 "--destination",
-                CATALOG_PATH,
+                str(CATALOG_PATH),
                 "--computer",
                 data.get("computer"),
                 "--user",
@@ -175,12 +155,12 @@ def backup(request):
                     cmds,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    timeout=3,
-                    check=True,
                 )
                 messages.success(request, "Backup started. See catalog.")
             except subprocess.CalledProcessError as err:
                 messages.error(request, f"Backup error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
     else:
         form = BackupForm()
     return render(request, "backup.html", {"form": form})
@@ -211,7 +191,7 @@ def restore(request):
                 "bb",
                 "restore",
                 "--destination",
-                CATALOG_PATH,
+                str(CATALOG_PATH),
                 "--computer",
                 data.get("computer"),
                 "--user",
@@ -248,8 +228,6 @@ def restore(request):
                     cmds,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    timeout=3,
-                    check=True,
                 )
                 messages.success(
                     request,
@@ -257,9 +235,79 @@ def restore(request):
                 )
             except subprocess.CalledProcessError as err:
                 messages.error(request, f"Restore error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
     else:
-        form = BackupForm()
+        form = RestoreForm()
     return render(request, "restore.html", {"form": form})
+
+
+@login_required
+def export(request):
+    if request.method == "POST":
+        form = ExportForm(request.POST)
+        if form.is_valid():
+            data = {
+                # Process the form data
+                "backup_id": form.cleaned_data["backup_id"],
+                "export_path": form.cleaned_data["export_path"],
+                "cut": form.cleaned_data["cut"],
+                "compress": form.cleaned_data["compress"],
+                "skip_error": form.cleaned_data["skip_error"],
+                "checksum": form.cleaned_data["checksum"],
+                "acl": form.cleaned_data["acl"],
+                "retry": form.cleaned_data["retry"],
+                "wait": form.cleaned_data["wait"],
+            }
+            # Compose mandatory command
+            cmds = [
+                "bb",
+                "export",
+                "--destination",
+                str(CATALOG_PATH),
+                "--backup-id",
+                data.get("backup_id"),
+                "--destination",
+                data.get("export_path"),
+                "--log",
+            ]
+            # Add optional commands
+            if data.get("mirror"):
+                cmds.append("--mirror")
+            if data.get("compress"):
+                cmds.append("--compress")
+            if data.get("skip_error"):
+                cmds.append("--skip-error")
+            if data.get("checksum"):
+                cmds.append("--checksum")
+            if data.get("acl"):
+                cmds.append("--acl")
+            if data.get("cut"):
+                cmds.append("--cut")
+            if data.get("retry"):
+                cmds.append("--retry")
+                cmds.append(data.get("retry"))
+                if data.get("wait"):
+                    cmds.append("--wait")
+                    cmds.append(data.get("wait"))
+            # Start subprocess
+            try:
+                subprocess.run(
+                    cmds,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                messages.success(
+                    request,
+                    f"Export started. See logs of backup-id:{data.get('backup_id')}.",
+                )
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Export error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
+    else:
+        form = ExportForm()
+    return render(request, "export.html", {"form": form})
 
 
 # endregion

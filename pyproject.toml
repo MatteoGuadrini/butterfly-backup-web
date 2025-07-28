@@ -6,7 +6,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'butterfly-backup-web'
-version = '0.0.3'
+version = '0.0.4'
 readme = 'README.md'
 license = { text = 'GNU General Public License v3 (GPLv3)' }
 authors = [{ name = 'Matteo Guadrini', email = 'matteo.guadrini@hotmail.it' }]
@@ -24,6 +24,16 @@ dependencies = [
     "django-bootstrap-v5",
     "Butterfly-Backup@git+https://github.com/MatteoGuadrini/Butterfly-Backup",
 ]
+
+[project.scripts]
+bbweb = "butterfly_backup_web.manage:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["butterfly_backup_web*"]
+
+[tool.setuptools.package-data]
+butterfly_backup_web = ['templates/*', 'templates/**/*']
 
 [project.urls]
 homepage = 'https://matteoguadrini.github.io/butterfly-backup-web/'

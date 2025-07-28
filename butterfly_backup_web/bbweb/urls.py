@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from bbweb import views
+from . import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path("details/<str:section>/logs", views.logs, name="logs"),
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
+    path("export/", views.export, name="export"),
 ]

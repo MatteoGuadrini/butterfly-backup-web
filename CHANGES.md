@@ -55,3 +55,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 - None
+
+## [0.0.4] - 2025-07-28
+
+### Added
+- Add export page
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None

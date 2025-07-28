@@ -17,6 +17,27 @@ cd butterfly-backup-web
 pip install . --upgrade
 ```
 
+After the installation, set `BB_CATALOG_PATH` variable into your environment script:
+
+```console
+nano ~/.bashrc      # or .zshrc if you use zsh
+...
+export BB_CATALOG_PATH=/backup
+...
+```
+
+And import it:
+
+```console
+source ~/.bashrc    # or .zshrc if you use zsh
+# Use bbweb command line
+bbweb migrate
+bbweb runserver 0.0.0.0:80
+# Use Python package
+python3 -m butterfly_backup_web migrate
+python3 -m butterfly_backup_web runserver 0.0.0.0:80
+```
+
 > [!NOTE]  
 > Installing Butterfly Backup Web, will be installed also the command line interface, commonly named `bb`.
 
@@ -25,16 +46,16 @@ pip install . --upgrade
 Butterfly Backup Web is distribuited with containerization files. You can build the image:
 
 ```console
-docker build . -t bbweb:0.0.3
+docker build . -t bbweb:0.0.4
 ```
 
 And run with Docker/Podman/Kubernetes
 
 ```console
 # Interactive server
-docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.3
+docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.4
 # Daemon server
-docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.3
+docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.4
 ```
 
 The build is distribuited with a default username and password:
@@ -49,11 +70,11 @@ BB_CATALOG_PATH="/tmp/backup"
 you can change user and/or password mapping the enviroment variables:
 
 ```console
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.0.3
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.0.4
 ```
 
 > [!NOTE]  
-> When the login is done, you can change the password into Django admin page: `http://127.0.0.3:8080/admin`.
+> When the login is done, you can change the password into Django admin page: `http://127.0.0.1:8080/admin`.
 
 If you want preserve the data, create a volume and map to container:
 
@@ -61,7 +82,7 @@ If you want preserve the data, create a volume and map to container:
 # Create a volume
 docker volume create bbweb
 # Run container
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.0.3
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.0.4
 ```
 
 ## Features
@@ -70,7 +91,7 @@ docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-
 - [x] Log details
 - [x] Backup page
 - [x] Restore page
-- [ ] Export page
+- [x] Export page
 - [ ] Archive page
 
 ## Open source
