@@ -119,3 +119,16 @@ class ExportForm(forms.Form):
     cut = forms.BooleanField(label="Delete source", required=False)
     retry = forms.IntegerField(label="Retry number", required=False)
     wait = forms.IntegerField(label="Seconds of retry wait", required=False)
+
+
+class ArchiveForm(forms.Form):
+    _catalog = tuple(
+        [
+            (bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"
+        ].reverse()
+    )
+    backup_id = forms.ChoiceField(
+        choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
+    )
+    days = forms.IntegerField(label="Older then days", required=False)
+    archive_path = forms.CharField(label="Archive path", max_length=100)
