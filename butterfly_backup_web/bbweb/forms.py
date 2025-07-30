@@ -72,9 +72,9 @@ class BackupForm(forms.Form):
 
 class RestoreForm(forms.Form):
     _catalog = tuple(
-        [
-            (bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"
-        ].reverse()
+        reversed(
+            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
+        )
     )
     computer = forms.CharField(label="Computer name or ip", max_length=100)
     backup_id = forms.ChoiceField(
@@ -103,9 +103,9 @@ class RestoreForm(forms.Form):
 
 class ExportForm(forms.Form):
     _catalog = tuple(
-        [
-            (bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"
-        ].reverse()
+        reversed(
+            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
+        )
     )
     export_path = forms.CharField(label="Export path", max_length=100)
     backup_id = forms.ChoiceField(
@@ -123,9 +123,9 @@ class ExportForm(forms.Form):
 
 class ArchiveForm(forms.Form):
     _catalog = tuple(
-        [
-            (bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"
-        ].reverse()
+        reversed(
+            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
+        )
     )
     backup_id = forms.ChoiceField(
         choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
