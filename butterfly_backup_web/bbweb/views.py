@@ -357,7 +357,7 @@ def archive(request):
                 messages.error(request, "Butterfly Backup doesn't installed")
     else:
         form = ArchiveForm()
-    return render(request, "export.html", {"form": form})
+    return render(request, "archive.html", {"form": form})
 
 
 # endregion
