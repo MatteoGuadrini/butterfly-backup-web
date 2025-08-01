@@ -32,9 +32,11 @@ And import it:
 source ~/.bashrc    # or .zshrc if you use zsh
 # Use bbweb command line
 bbweb migrate
+bbweb createsuperuser
 bbweb runserver 0.0.0.0:80
 # Use Python package
 python3 -m butterfly_backup_web migrate
+python3 -m butterfly_backup_web createsuperuser
 python3 -m butterfly_backup_web runserver 0.0.0.0:80
 ```
 
@@ -46,16 +48,16 @@ python3 -m butterfly_backup_web runserver 0.0.0.0:80
 Butterfly Backup Web is distribuited with containerization files. You can build the image:
 
 ```console
-docker build . -t bbweb:0.0.4
+docker build . -t bbweb:0.1.0
 ```
 
 And run with Docker/Podman/Kubernetes
 
 ```console
 # Interactive server
-docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.4
+docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.1.0
 # Daemon server
-docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.0.4
+docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.1.0
 ```
 
 The build is distribuited with a default username and password:
@@ -70,7 +72,7 @@ BB_CATALOG_PATH="/tmp/backup"
 you can change user and/or password mapping the enviroment variables:
 
 ```console
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.0.4
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.1.0
 ```
 
 > [!NOTE]  
@@ -82,7 +84,7 @@ If you want preserve the data, create a volume and map to container:
 # Create a volume
 docker volume create bbweb
 # Run container
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.0.4
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.1.0
 ```
 
 ## Features
@@ -92,7 +94,9 @@ docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-
 - [x] Backup page
 - [x] Restore page
 - [x] Export page
-- [ ] Archive page
+- [x] Archive page
+- [ ] Log-out page
+- [ ] Themes
 
 ## Open source
 
