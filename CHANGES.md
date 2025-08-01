@@ -9,11 +9,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [0.0.1] - 2025-06-26
+## [0.1.0] - 2025-08-01
 
 ### Added
-- Start **butterfly-backup-web** project
-- Add homepage (catalog)
+- Add archive page
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None
+
+## [0.0.4] - 2025-07-28
+
+### Added
+- Add export page
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None
+
+## [0.0.3] - 2025-07-15
+
+### Added
+- Add restore page
+- Add session age cookie
 
 ### Changed
 - None
@@ -41,25 +69,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 - None
 
-## [0.0.3] - 2025-07-15
+## [0.0.1] - 2025-06-26
 
 ### Added
-- Add restore page
-- Add session age cookie
-
-### Changed
-- None
-
-### Removed
-- None
-
-### Fixed
-- None
-
-## [0.0.4] - 2025-07-28
-
-### Added
-- Add export page
+- Start **butterfly-backup-web** project
+- Add homepage (catalog)
 
 ### Changed
 - None

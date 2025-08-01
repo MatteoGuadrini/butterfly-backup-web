@@ -28,4 +28,5 @@ urlpatterns = [
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
     path("export/", views.export, name="export"),
+    path("archive/", views.archive, name="archive"),
 ]

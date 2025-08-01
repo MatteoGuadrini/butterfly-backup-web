@@ -7,7 +7,14 @@ from pathlib import Path
 import subprocess
 import os
 from .settings import CATALOG_PATH
-from .forms import BackupForm, RestoreForm, ExportForm, CatalogError, get_catalog
+from .forms import (
+    BackupForm,
+    RestoreForm,
+    ExportForm,
+    ArchiveForm,
+    CatalogError,
+    get_catalog,
+)
 
 
 # region views
@@ -308,6 +315,49 @@ def export(request):
     else:
         form = ExportForm()
     return render(request, "export.html", {"form": form})
+
+
+@login_required
+def archive(request):
+    if request.method == "POST":
+        form = ArchiveForm(request.POST)
+        if form.is_valid():
+            data = {
+                # Process the form data
+                "backup_id": form.cleaned_data["backup_id"],
+                "archive_path": form.cleaned_data["archive_path"],
+                "days": form.cleaned_data["days"],
+            }
+            # Compose mandatory command
+            cmds = [
+                "bb",
+                "archive",
+                "--destination",
+                str(CATALOG_PATH),
+                "--backup-id",
+                data.get("backup_id"),
+                "--destination",
+                data.get("archive_path"),
+                "--log",
+            ]
+            # Start subprocess
+            try:
+                subprocess.run(
+                    cmds,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                messages.success(
+                    request,
+                    "Archive started.",
+                )
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Archive error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
+    else:
+        form = ArchiveForm()
+    return render(request, "archive.html", {"form": form})
 
 
 # endregion
