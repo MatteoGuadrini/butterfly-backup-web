@@ -4,9 +4,6 @@
 
 This is a web interface to [Butterfly Backup](https://github.com/MatteoGuadrini/Butterfly-Backup) command line.
 
-> [!WARNING]  
-> This project is under development.
-
 ## Install Butterfly Backup Web
 
 To install locally, run this:
@@ -84,7 +81,7 @@ If you want preserve the data, create a volume and map to container:
 # Create a volume
 docker volume create bbweb
 # Run container
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -v bbweb:/butterfly-backup-web localhost/bbweb:0.1.0
+docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.1.0
 ```
 
 ## Features
