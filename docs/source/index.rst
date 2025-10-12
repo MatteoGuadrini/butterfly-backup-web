@@ -70,6 +70,7 @@ Configuration
 To configure Butterfly Backup Web, edit your profile and insert you *catalog* backup:
 
 .. code-block:: shell
+
       nano ~/.bashrc      # or .zshrc if you use zsh
       ...
       export BB_CATALOG_PATH=/backup
@@ -78,6 +79,7 @@ To configure Butterfly Backup Web, edit your profile and insert you *catalog* ba
 After this, import and create a database:
 
 .. code-block:: shell
+      
       source ~/.bashrc    # or .zshrc if you use zsh
       # Use bbweb command line
       bbweb migrate
