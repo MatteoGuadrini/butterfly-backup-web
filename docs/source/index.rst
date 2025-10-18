@@ -37,8 +37,8 @@ Butterfly Backup Web is distribuited with containerization files. You can build 
 .. code-block:: shell
 
       cd butterfly-backup-web
-      docker build . -t bbweb:0.1.0
-      docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.1.0
+      docker build . -t bbweb:latest
+      docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:latest
 
 If you want preserve the data, create a volume and map to container:
 
@@ -89,4 +89,33 @@ After this, import and create a database:
       python3 -m butterfly_backup_web migrate
       python3 -m butterfly_backup_web createsuperuser
       python3 -m butterfly_backup_web runserver 0.0.0.0:80
+
+
+Systemd Service
+---------------
+
+If you use linux and systemd in your linux environment, you should configure a bbweb service, like this:
+
+.. code-block:: shell
+
+      nano /usr/lib/systemd/system/bbweb.service
+
+      [Unit]
+      Description=Butterfly Backup Web
+      After=multi-user.target
+
+      [Service]
+      Type=simple
+      Restart=always
+      ExecStart=/usr/bin/python3 -m butterfly_backup_web runserver 0.0.0.0:80
+      Environment="BB_CATALOG_PATH=/my_catalog"     # Modify with your catalog path
+
+      [Install]
+      WantedBy=multi-user.target
+
+And start and enable it:
+
+.. code-block:: shell
+
+      systemctl enable bbweb.service --now
  
