@@ -67,13 +67,13 @@ Docker image born with enviroment variables; modifying these variables to custom
 Configuration
 -------------
 
-To configure Butterfly Backup Web, edit your profile and insert you *catalog* backup:
+To configure Butterfly Backup Web, edit your profile and insert your *catalog* backup:
 
 .. code-block:: shell
 
       nano ~/.bashrc      # or .zshrc if you use zsh
       ...
-      export BB_CATALOG_PATH=/backup
+      export BB_CATALOG_PATH=/tmp/backup
       ...
 
 After this, import and create a database:
@@ -94,11 +94,12 @@ After this, import and create a database:
 Systemd Service
 ---------------
 
-If you use linux and systemd in your linux environment, you should configure a bbweb service, like this:
+If you use linux and systemd in your linux environment, you should configure a **bbweb** service, like this:
 
 .. code-block:: shell
 
-      nano /usr/lib/systemd/system/bbweb.service
+      sudo wget -O /usr/lib/systemd/system/bbweb.service https://raw.githubusercontent.com/MatteoGuadrini/butterfly-backup-web/refs/heads/main/systemd/bbweb.service
+      sudo nano /usr/lib/systemd/system/bbweb.service
 
       [Unit]
       Description=Butterfly Backup Web
@@ -108,14 +109,15 @@ If you use linux and systemd in your linux environment, you should configure a b
       Type=simple
       Restart=always
       ExecStart=/usr/bin/python3 -m butterfly_backup_web runserver 0.0.0.0:80
-      Environment="BB_CATALOG_PATH=/my_catalog"     # Modify with your catalog path
+      Environment="BB_CATALOG_PATH=/tmp/backup"     # Modify with your catalog path
 
       [Install]
       WantedBy=multi-user.target
 
-And start and enable it:
+Now start and enable it:
 
 .. code-block:: shell
 
-      systemctl enable bbweb.service --now
+      sudo systemctl daemon-reload
+      sudo systemctl enable bbweb.service --now
  
