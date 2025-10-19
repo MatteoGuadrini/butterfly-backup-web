@@ -1,0 +1,12 @@
+[Unit]
+Description=Butterfly Backup Web
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 -m butterfly_backup_web runserver 0.0.0.0:80
+Environment="BB_CATALOG_PATH=/tmp/backup"
+
+[Install]
+WantedBy=multi-user.target
