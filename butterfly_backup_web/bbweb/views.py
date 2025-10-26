@@ -84,8 +84,6 @@ def logs(request, section):
         if str(section_root) != CATALOG_PATH:
             new_root = Path(CATALOG_PATH)
             log_file = new_root.joinpath(section_path.relative_to(section_root))
-            print(section_root)
-            print(log_file)
         if os.path.isfile(log_file):
             context[action] = open(log_file).read().replace("\n", "<br>")
     if not context:
