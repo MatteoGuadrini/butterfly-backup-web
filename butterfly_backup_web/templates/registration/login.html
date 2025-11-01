@@ -1,16 +1,28 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% block title %}Login to Butterfly Backup{% endblock %}
-{{ value|linebreaks }}
-<img src="https://butterfly-backup.readthedocs.io/en/latest/_static/bb_logo.svg" alt="Butterfly Backup" width="150"/>
-<br>
-{% bootstrap_messages %}
-<br>
-{% block content %}
-<form method="post" class="form-control">
-  {% csrf_token %}
-  {% bootstrap_form form field_class="col-md-3" %}
-  {% buttons submit='Log-in' reset="Cancel" %}{% endbuttons %}
-</form>
-{% endblock %}
+<div class="container">
+  <div class="row">
+    <h2 align="center">Login to Butterfly Backup</h2>
+    {{ value|linebreaks }}
+    <img src="https://butterfly-backup.readthedocs.io/en/latest/_static/bb_logo.svg" alt="Butterfly Backup" width="200" height="200"/>
+    <br>
+    {% bootstrap_messages %}
+    <br>
+  </div>
+  <div class="row">
+    <div class="col-md">
+    </div>
+    {% block content %}
+    <div class="col-md">
+      <form method="post" class="form-control">
+        {% csrf_token %}
+        {% bootstrap_form form field_class="col-md" %}
+        {% buttons submit='Log-in' reset="Cancel" %}{% endbuttons %}
+      </form>
+      {% endblock %}
+    </div>
+    <div class="col-md">
+    </div>
+  </div>
+</div>
