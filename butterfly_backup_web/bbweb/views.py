@@ -72,6 +72,11 @@ def logs(request, section):
     template = loader.get_template("logs.html")
     context = {}
     extension = ".log"
+    general_log = os.path.join(
+        Path(config.get(section, "path", fallback="/")).parent, "general" + extension
+    )
+    if os.path.isfile(general_log):
+        context["general"] = open(general_log).read().replace("\n", "<br>")
     for action in ("backup", "restore", "export"):
         # Get path of specific section
         log_file = os.path.join(
