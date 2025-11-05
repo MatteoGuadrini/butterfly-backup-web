@@ -73,8 +73,15 @@ def logs(request, section):
     context = {}
     extension = ".log"
     general_log = os.path.join(
-        Path(config.get(section, "path", fallback="/")).parent, "general" + extension
+        Path(config.get(section, "path", fallback="/")).parent, f"general{extension}"
     )
+    # Get part of path
+    section_path = Path(general_log)
+    section_root = section_path.parents[1]
+    # Check if catalog root is the same
+    if str(section_root) != CATALOG_PATH:
+        new_root = Path(CATALOG_PATH)
+        general_log = new_root.joinpath(section_path.relative_to(section_root))
     if os.path.isfile(general_log):
         context["general"] = open(general_log).read().replace("\n", "<br>")
     for action in ("backup", "restore", "export"):
@@ -84,7 +91,6 @@ def logs(request, section):
         )
         # Get part of path
         section_path = Path(log_file)
-        section_root = section_path.parents[2]
         # Check if catalog root is the same
         if str(section_root) != CATALOG_PATH:
             new_root = Path(CATALOG_PATH)
