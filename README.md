@@ -92,7 +92,7 @@ docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.1.0
 - [x] Restore page
 - [x] Export page
 - [x] Archive page
-- [ ] Log-out page
+- [x] Log-out page
 - [ ] Themes
 
 ## Open source
