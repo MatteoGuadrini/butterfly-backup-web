@@ -24,6 +24,8 @@
       {% for section, value in backups.items %}
         {% if value.status == "23" or value.status == "24" %}
       <tr class="table-warning">
+        {% elif value.status == "running" %}
+      <tr class="table-info">
         {% elif value.status != "0" %}
       <tr class="table-danger">
         {% else %}

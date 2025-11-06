@@ -37,7 +37,7 @@ def home(request):
             "type": config.get(section, "type", fallback=None),
             "os": config.get(section, "os", fallback=None),
             "timestamp": config.get(section, "timestamp", fallback=None),
-            "status": config.get(section, "status", fallback="0"),
+            "status": config.get(section, "status", fallback="running"),
         }
     return HttpResponse(template.render(context, request))
 
@@ -53,7 +53,7 @@ def details(request, section):
         "timestamp": config.get(section, "timestamp", fallback=None),
         "start": config.get(section, "start", fallback=None),
         "end": config.get(section, "end", fallback=None),
-        "status": config.get(section, "status", fallback="0"),
+        "status": config.get(section, "status", fallback="running"),
         "archived": config.get(section, "archived", fallback=False),
         "cleaned": config.get(section, "cleaned", fallback=False),
         "path": config.get(section, "path", fallback=False),
