@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-08
+
+### Added
+- Add _Logout_
+- Add general log
+- Add footer template
+
+### Changed
+- Adjust layout
+
+### Removed
+- None
+
+### Fixed
+- Fix display running backup into table
+
 ## [0.1.0] - 2025-08-01
 
 ### Added
