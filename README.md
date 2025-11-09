@@ -30,11 +30,11 @@ source ~/.bashrc    # or .zshrc if you use zsh
 # Use bbweb command line
 bbweb migrate
 bbweb createsuperuser
-bbweb runserver 0.0.0.0:80
+bbweb runserver 0.0.0.0:8080
 # Use Python package
 python3 -m butterfly_backup_web migrate
 python3 -m butterfly_backup_web createsuperuser
-python3 -m butterfly_backup_web runserver 0.0.0.0:80
+python3 -m butterfly_backup_web runserver 0.0.0.0:8080
 ```
 
 > [!NOTE]  
@@ -45,16 +45,16 @@ python3 -m butterfly_backup_web runserver 0.0.0.0:80
 Butterfly Backup Web is distribuited with containerization files. You can build the image:
 
 ```console
-docker build . -t bbweb:0.1.0
+docker build . -t bbweb:latest
 ```
 
 And run with Docker/Podman/Kubernetes
 
 ```console
 # Interactive server
-docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.1.0
+docker run -it --rm -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:latest
 # Daemon server
-docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:0.1.0
+docker run -d -v /backup_catalog/:/backup_catalog/ -p 8080:8080 localhost/bbweb:latest
 ```
 
 The build is distribuited with a default username and password:
@@ -69,7 +69,7 @@ BB_CATALOG_PATH="/tmp/backup"
 you can change user and/or password mapping the enviroment variables:
 
 ```console
-docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:0.1.0
+docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:latest
 ```
 
 > [!NOTE]  
@@ -81,7 +81,7 @@ If you want preserve the data, create a volume and map to container:
 # Create a volume
 docker volume create bbweb
 # Run container
-docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.1.0
+docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:latest
 ```
 
 ## Features
@@ -92,7 +92,8 @@ docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:0.1.0
 - [x] Restore page
 - [x] Export page
 - [x] Archive page
-- [ ] Log-out page
+- [x] Log-out
+- [ ] SSL
 - [ ] Themes
 
 ## Open source
