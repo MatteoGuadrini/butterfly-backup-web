@@ -48,6 +48,16 @@ INSTALLED_APPS = [
     "bootstrap5",
 ]
 
+LOCAL_APP = (
+    "butterfly_backup_web.bbweb" if find_spec("butterfly_backup_web") else "bbweb"
+)
+try:
+    static_index = INSTALLED_APPS.index("django.contrib.staticfiles")
+except ValueError:
+    INSTALLED_APPS.append(LOCAL_APP)
+else:
+    INSTALLED_APPS.insert(static_index, LOCAL_APP)
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -133,6 +143,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+BBWEB_SSL_ENABLE = environ.get("BBWEB_SSL_ENABLE", "False").strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+BBWEB_SSL_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CERTIFICATE_PATH")
+BBWEB_SSL_KEY_PATH = environ.get("BBWEB_SSL_KEY_PATH")
+BBWEB_SSL_CA_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CA_CERTIFICATE_PATH")
+
+if BBWEB_SSL_ENABLE:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = int(environ.get("BBWEB_SECURE_HSTS_SECONDS", "31536000"))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = environ.get(
+        "BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS", "True"
+    ).strip().lower() in ("1", "true", "yes", "on")
+    SECURE_HSTS_PRELOAD = environ.get(
+        "BBWEB_SECURE_HSTS_PRELOAD", "True"
+    ).strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

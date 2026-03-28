@@ -31,6 +31,13 @@ source ~/.bashrc    # or .zshrc if you use zsh
 bbweb migrate
 bbweb createsuperuser
 bbweb runserver 0.0.0.0:8080
+# Optional HTTPS
+bbweb runserver --ssl 0.0.0.0:8443 --cert /path/to/server.crt --key /path/to/server.key
+# or use environment variables
+export BBWEB_SSL_ENABLE=1
+export BBWEB_SSL_CERTIFICATE_PATH=/path/to/server.crt
+export BBWEB_SSL_KEY_PATH=/path/to/server.key
+bbweb runserver 0.0.0.0:8443
 # Use Python package
 python3 -m butterfly_backup_web migrate
 python3 -m butterfly_backup_web createsuperuser
@@ -93,7 +100,7 @@ docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:latest
 - [x] Export page
 - [x] Archive page
 - [x] Log-out
-- [ ] SSL
+- [x] SSL
 - [ ] Themes
 
 ## Open source
