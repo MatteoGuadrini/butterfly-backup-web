@@ -64,6 +64,52 @@ Docker image born with enviroment variables; modifying these variables to custom
       BB_CATALOG_PATH="/tmp/backup"
       ...
 
+Environment variables
+---------------------
+
+The following environment variables are available for Butterfly Backup Web:
+
+.. list-table:: Environment variables
+   :header-rows: 1
+   :widths: 20 50 30
+
+   * - Variable
+     - Description
+     - Default
+   * - BB_CATALOG_PATH
+     - Backup catalog directory.
+     - /tmp/backup
+   * - DJANGO_SUPERUSER_USERNAME
+     - Default admin username for the initial Docker image.
+     - admin
+   * - DJANGO_SUPERUSER_PASSWORD
+     - Default admin password for the initial Docker image.
+     - Admin000!
+   * - DJANGO_SUPERUSER_EMAIL
+     - Default admin email for the initial Docker image.
+     - admin@bbweb.com
+   * - BBWEB_SSL_ENABLE
+     - Enable HTTPS and secure cookie/HSTS settings.
+     - False
+   * - BBWEB_SSL_CERTIFICATE_PATH
+     - Path to the SSL certificate file used by the custom runserver command.
+     - (none)
+   * - BBWEB_SSL_KEY_PATH
+     - Path to the SSL private key file used by the custom runserver command.
+     - (none)
+   * - BBWEB_SSL_CA_CERTIFICATE_PATH
+     - Optional path to a CA bundle for HTTPS.
+     - (none)
+   * - BBWEB_SECURE_HSTS_SECONDS
+     - The HSTS max-age value in seconds when SSL is enabled.
+     - 31536000
+   * - BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS
+     - Enable HSTS for subdomains when SSL is enabled.
+     - True
+   * - BBWEB_SECURE_HSTS_PRELOAD
+     - Enable HSTS preload when SSL is enabled.
+     - True
+
 Configuration
 -------------
 
@@ -89,6 +135,13 @@ After this, import and create a database:
       python3 -m butterfly_backup_web migrate
       python3 -m butterfly_backup_web createsuperuser
       python3 -m butterfly_backup_web runserver 0.0.0.0:80
+      # Optional HTTPS
+      bbweb runserver --ssl 0.0.0.0:8443 --cert /path/to/server.crt --key /path/to/server.key
+      # or use environment variables
+      export BBWEB_SSL_ENABLE=1
+      export BBWEB_SSL_CERTIFICATE_PATH=/path/to/server.crt
+      export BBWEB_SSL_KEY_PATH=/path/to/server.key
+      bbweb runserver 0.0.0.0:8443
 
 
 Systemd Service
