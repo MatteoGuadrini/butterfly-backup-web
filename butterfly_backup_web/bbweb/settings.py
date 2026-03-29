@@ -153,23 +153,26 @@ BBWEB_SSL_ENABLE = environ.get("BBWEB_SSL_ENABLE", "False").strip().lower() in (
 BBWEB_SSL_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CERTIFICATE_PATH")
 BBWEB_SSL_KEY_PATH = environ.get("BBWEB_SSL_KEY_PATH")
 BBWEB_SSL_CA_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CA_CERTIFICATE_PATH")
+BBWEB_SECURE_HSTS_SECONDS = int(environ.get("BBWEB_SECURE_HSTS_SECONDS", "31536000"))
+BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS = environ.get(
+    "BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS", "True"
+).strip().lower() in ("1", "true", "yes", "on")
+BBWEB_SECURE_HSTS_PRELOAD = environ.get(
+    "BBWEB_SECURE_HSTS_PRELOAD", "True"
+).strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
 
 if BBWEB_SSL_ENABLE:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = int(environ.get("BBWEB_SECURE_HSTS_SECONDS", "31536000"))
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = environ.get(
-        "BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS", "True"
-    ).strip().lower() in ("1", "true", "yes", "on")
-    SECURE_HSTS_PRELOAD = environ.get(
-        "BBWEB_SECURE_HSTS_PRELOAD", "True"
-    ).strip().lower() in (
-        "1",
-        "true",
-        "yes",
-        "on",
-    )
+    SECURE_HSTS_SECONDS = BBWEB_SECURE_HSTS_SECONDS
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS
+    SECURE_HSTS_PRELOAD = BBWEB_SECURE_HSTS_PRELOAD
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
 else:
