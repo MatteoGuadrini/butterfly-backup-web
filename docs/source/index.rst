@@ -141,7 +141,7 @@ After this, import and create a database:
       export BBWEB_SSL_ENABLE=1
       export BBWEB_SSL_CERTIFICATE_PATH=/path/to/server.crt
       export BBWEB_SSL_KEY_PATH=/path/to/server.key
-      bbweb runserver 0.0.0.0:8443
+      bbweb runserver 0.0.0.0:8443    # or 443 if you have permissions
 
 
 Systemd Service

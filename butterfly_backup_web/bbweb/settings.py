@@ -28,9 +28,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-ne)d_cm&rh5mhll!pgasazhbpa_pzq*#w7dp!gc_7ztrtyy4@u"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [uname().nodename, "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [uname().nodename, "localhost", "127.0.0.1", "::1"]
+CSRF_TRUSTED_ORIGINS = ["https://" + host + ":8443" for host in ALLOWED_HOSTS] + [
+    "https://" + host for host in ALLOWED_HOSTS
+]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Strict"
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS
+CORS_ORIGINS_WHITELIST = CSRF_TRUSTED_ORIGINS
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
