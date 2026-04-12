@@ -31,11 +31,21 @@ source ~/.bashrc    # or .zshrc if you use zsh
 bbweb migrate
 bbweb createsuperuser
 bbweb runserver 0.0.0.0:8080
+# Optional HTTPS
+bbweb runserver --ssl 0.0.0.0:8443 --cert /path/to/server.crt --key /path/to/server.key
+# or use environment variables
+export BBWEB_SSL_ENABLE=1
+export BBWEB_SSL_CERTIFICATE_PATH=/path/to/server.crt
+export BBWEB_SSL_KEY_PATH=/path/to/server.key
+bbweb runserver 0.0.0.0:8443
 # Use Python package
 python3 -m butterfly_backup_web migrate
 python3 -m butterfly_backup_web createsuperuser
 python3 -m butterfly_backup_web runserver 0.0.0.0:8080
 ```
+
+> [!NOTE]  
+> When SSL is enabled, Butterfly Backup Web uses port **443** (standard HTTPS) or **8443** (alternative HTTPS). Port 443 requires elevated privileges, while port 8443 can be used without special permissions.
 
 > [!NOTE]  
 > Installing Butterfly Backup Web, will be installed also the command line interface, commonly named `bb`.
@@ -93,7 +103,7 @@ docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:latest
 - [x] Export page
 - [x] Archive page
 - [x] Log-out
-- [ ] SSL
+- [x] SSL
 - [ ] Themes
 
 ## Open source

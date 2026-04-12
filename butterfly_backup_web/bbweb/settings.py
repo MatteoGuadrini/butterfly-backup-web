@@ -30,7 +30,15 @@ SECRET_KEY = "django-insecure-ne)d_cm&rh5mhll!pgasazhbpa_pzq*#w7dp!gc_7ztrtyy4@u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [uname().nodename, "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [uname().nodename, "localhost", "127.0.0.1", "::1"]
+CSRF_TRUSTED_ORIGINS = ["https://" + host + ":8443" for host in ALLOWED_HOSTS] + [
+    "https://" + host for host in ALLOWED_HOSTS
+]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Strict"
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_ALLOWED_ORIGINS = CSRF_TRUSTED_ORIGINS
+CORS_ORIGINS_WHITELIST = CSRF_TRUSTED_ORIGINS
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
@@ -47,6 +55,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bootstrap5",
 ]
+
+LOCAL_APP = (
+    "butterfly_backup_web.bbweb" if find_spec("butterfly_backup_web") else "bbweb"
+)
+try:
+    static_index = INSTALLED_APPS.index("django.contrib.staticfiles")
+except ValueError:
+    INSTALLED_APPS.append(LOCAL_APP)
+else:
+    INSTALLED_APPS.insert(static_index, LOCAL_APP)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -133,6 +151,45 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+BBWEB_SSL_ENABLE = environ.get("BBWEB_SSL_ENABLE", "False").strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+BBWEB_SSL_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CERTIFICATE_PATH")
+BBWEB_SSL_KEY_PATH = environ.get("BBWEB_SSL_KEY_PATH")
+BBWEB_SSL_CA_CERTIFICATE_PATH = environ.get("BBWEB_SSL_CA_CERTIFICATE_PATH")
+BBWEB_SECURE_HSTS_SECONDS = int(environ.get("BBWEB_SECURE_HSTS_SECONDS", "31536000"))
+BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS = environ.get(
+    "BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS", "True"
+).strip().lower() in ("1", "true", "yes", "on")
+BBWEB_SECURE_HSTS_PRELOAD = environ.get(
+    "BBWEB_SECURE_HSTS_PRELOAD", "True"
+).strip().lower() in (
+    "1",
+    "true",
+    "yes",
+    "on",
+)
+
+if BBWEB_SSL_ENABLE:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = BBWEB_SECURE_HSTS_SECONDS
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = BBWEB_SECURE_HSTS_INCLUDE_SUBDOMAINS
+    SECURE_HSTS_PRELOAD = BBWEB_SECURE_HSTS_PRELOAD
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

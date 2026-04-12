@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-04-12
+
+### Added
+- Add SSL parts
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None
+
 ## [0.2.0] - 2025-11-08
 
 ### Added
