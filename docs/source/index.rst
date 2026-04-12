@@ -143,6 +143,10 @@ After this, import and create a database:
       export BBWEB_SSL_KEY_PATH=/path/to/server.key
       bbweb runserver 0.0.0.0:8443    # or 443 if you have permissions
 
+.. note::
+
+   When SSL is enabled, Butterfly Backup Web uses port **443** (standard HTTPS) or **8443** (alternative HTTPS). Port 443 requires elevated privileges, while port 8443 can be used without special permissions.
+
 
 Systemd Service
 ---------------
@@ -173,4 +177,36 @@ Now start and enable it:
 
       sudo systemctl daemon-reload
       sudo systemctl enable bbweb.service --now
+
+Systemd Service with HTTPS
+***************************
+
+To enable HTTPS in your systemd service, update the service file with SSL environment variables and port:
+
+.. code-block:: shell
+
+      sudo nano /usr/lib/systemd/system/bbweb.service
+
+      [Unit]
+      Description=Butterfly Backup Web
+      After=multi-user.target
+
+      [Service]
+      Type=simple
+      Restart=always
+      ExecStart=/usr/bin/python3 -m butterfly_backup_web runserver 0.0.0.0:8443
+      Environment="BB_CATALOG_PATH=/tmp/backup"     # Modify with your catalog path
+      Environment="BBWEB_SSL_ENABLE=1"
+      Environment="BBWEB_SSL_CERTIFICATE_PATH=/path/to/server.crt"
+      Environment="BBWEB_SSL_KEY_PATH=/path/to/server.key"
+
+      [Install]
+      WantedBy=multi-user.target
+
+Then reload and restart the service:
+
+.. code-block:: shell
+
+      sudo systemctl daemon-reload
+      sudo systemctl restart bbweb.service
  

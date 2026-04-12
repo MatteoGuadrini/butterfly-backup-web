@@ -45,6 +45,9 @@ python3 -m butterfly_backup_web runserver 0.0.0.0:8080
 ```
 
 > [!NOTE]  
+> When SSL is enabled, Butterfly Backup Web uses port **443** (standard HTTPS) or **8443** (alternative HTTPS). Port 443 requires elevated privileges, while port 8443 can be used without special permissions.
+
+> [!NOTE]  
 > Installing Butterfly Backup Web, will be installed also the command line interface, commonly named `bb`.
 
 ## Docker
