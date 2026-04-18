@@ -1,8 +1,6 @@
-{% include "menu.html" %}
+{% extends "base.html" %}
 {% load bootstrap5 %}
-{% bootstrap_messages %}
 
-{{ value|linebreaks }}
 {% block content %}
 
 <div class="w-90 p-3" >
@@ -53,7 +51,6 @@
       .order('desc')
       .draw();
   </script>
-  {% endblock %}
 </div>
 
-{% include "footer.html" %}
+{% endblock %}
