@@ -14,6 +14,9 @@
   <!-- DataTables Bootstrap5 CSS -->
   <link href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css" rel="stylesheet">
   
+  <!-- Bootstrap Icons CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   
@@ -126,7 +129,7 @@
         </ul>
         <div class="d-flex align-items-center gap-2">
           <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme">
-            <span id="theme-icon">🌙</span>
+            <i id="theme-icon" class="bi bi-moon"></i>
           </button>
           <ul class="nav navbar-nav">
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
@@ -192,7 +195,7 @@
       themeLink.href = isDark ? DARK_THEME_URL : LIGHT_THEME_URL;
       
       // Update icon
-      themeIcon.textContent = isDark ? '☀️' : '🌙';
+      themeIcon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon';
       
       // Save preference
       localStorage.setItem(THEME_STORAGE_KEY, theme);
