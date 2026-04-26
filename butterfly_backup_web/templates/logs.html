@@ -1,5 +1,6 @@
-{% include "menu.html" %}
+{% extends "base.html" %}
 
+{% block content %}
 <div class="w-90 p-3" >
     {% if no_log %}
         {{ no_log }}
@@ -124,3 +125,5 @@
         </div>
     {% endif %}
 </div>
+
+{% endblock %}

@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-26
+
+### Added
+- Add light/dark scheme [Cyborg](https://bootswatch.com/cyborg/)
+
+### Changed
+- None
+
+### Removed
+- None
+
+### Fixed
+- None
+
 ## [0.3.0] - 2026-04-12
 
 ### Added

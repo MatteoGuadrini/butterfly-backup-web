@@ -1,4 +1,6 @@
-{% include "menu.html" %}
+{% extends "base.html" %}
+
+{% block content %}
 <div class="w-90 p-3" >
     {{ value|linebreaks }}
 
@@ -29,3 +31,5 @@
     Back
     </a>
 </div>
+
+{% endblock %}

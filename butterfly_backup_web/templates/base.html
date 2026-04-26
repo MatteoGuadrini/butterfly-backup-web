@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+{% load bootstrap5 %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Butterfly Backup{% endblock %}</title>
+  
+  <!-- Bootswatch Themes (CDN) -->
+  <link rel="stylesheet" id="theme-link" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/cyborg/bootstrap.min.css">
+  
+  <!-- DataTables Bootstrap5 CSS -->
+  <link href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/v/dt/dt-2.3.2/datatables.js"></script>
+  <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>
+  
+  <!-- Custom Theme Styles -->
+  <style>
+    :root {
+      --transition-time: 0.3s;
+    }
+    
+    html {
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      html[data-bs-theme="auto"] {
+        color-scheme: dark;
+      }
+    }
+    
+    @media (prefers-color-scheme: light) {
+      html[data-bs-theme="auto"] {
+        color-scheme: light;
+      }
+    }
+    
+    body {
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    
+    .theme-toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: inherit;
+      padding: 0.5rem;
+      transition: transform 0.3s;
+    }
+    
+    .theme-toggle-btn:hover {
+      transform: rotate(20deg);
+    }
+    
+    .navbar {
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+    
+    .navbar-brand, .nav-link, .navbar-brand:hover, .nav-link:hover {
+      color: #ffffff !important;
+    }
+    
+    .nav-link.active {
+      color: #00d4ff !important;
+    }
+    
+    .color-main-link {
+      color: #ffffff !important;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .color-main-link:hover {
+      color: #ffffff !important;
+      text-decoration: underline;
+    }
+    
+    .table-info {
+      background-color: #00d4ff !important;
+      color: #000000 !important;
+    }
+    
+    .table-info a {
+      color: #ffffff !important;
+    }
+
+    /* Dark styling for form elements */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    input[type="search"],
+    input[type="url"],
+    input[type="tel"],
+    textarea,
+    select {
+      background-color: #2d2d2d !important;
+      color: #ffffff !important;
+      border-color: #555555 !important;
+    }
+
+    /* Focus states for form elements */
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    input[type="time"]:focus,
+    input[type="search"]:focus,
+    input[type="url"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus,
+    select:focus {
+      background-color: #3d3d3d !important;
+      color: #ffffff !important;
+      border-color: #00d4ff !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25) !important;
+    }
+
+    /* Style for placeholders */
+    input::placeholder,
+    textarea::placeholder {
+      color: #999999 !important;
+    }
+
+    /* Checkbox and Radio styling */
+    input[type="checkbox"],
+    input[type="radio"] {
+      background-color: #2d2d2d !important;
+      border-color: #555555 !important;
+    }
+
+    input[type="checkbox"]:checked,
+    input[type="radio"]:checked {
+      background-color: #00d4ff !important;
+      border-color: #00d4ff !important;
+    }
+
+    /* Button styling */
+    .btn {
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #00d4ff !important;
+      border-color: #00d4ff !important;
+      color: #000000 !important;
+    }
+
+    .btn-primary:hover {
+      background-color: #00a8cc !important;
+      border-color: #00a8cc !important;
+    }
+
+    .btn-secondary {
+      background-color: #555555 !important;
+      border-color: #555555 !important;
+      color: #ffffff !important;
+    }
+
+    .btn-secondary:hover {
+      background-color: #666666 !important;
+      border-color: #666666 !important;
+    }
+
+    /* Form groups and labels */
+    label {
+      color: #ffffff !important;
+    }
+
+    .form-control {
+      background-color: #2d2d2d !important;
+      color: #ffffff !important;
+      border-color: #555555 !important;
+    }
+
+    .form-control:focus {
+      background-color: #3d3d3d !important;
+      color: #ffffff !important;
+      border-color: #00d4ff !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25) !important;
+    }
+
+    .form-select {
+      background-color: #2d2d2d !important;
+      color: #ffffff !important;
+      border-color: #555555 !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+    }
+
+    .form-select:focus {
+      background-color: #3d3d3d !important;
+      color: #ffffff !important;
+      border-color: #00d4ff !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25) !important;
+    }
+
+    .form-check-input {
+      background-color: #2d2d2d !important;
+      border-color: #555555 !important;
+    }
+
+    .form-check-input:checked {
+      background-color: #00d4ff !important;
+      border-color: #00d4ff !important;
+    }
+
+    .form-check-input:focus {
+      border-color: #00d4ff !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25) !important;
+    }
+
+    /* Help text styling */
+    .form-text {
+      color: #cccccc !important;
+    }
+
+    /* Invalid/Error styling */
+    .is-invalid,
+    .form-control.is-invalid:focus {
+      border-color: #ff6b6b !important;
+    }
+
+    .invalid-feedback {
+      color: #ff6b6b !important;
+    }
+
+    /* Valid styling */
+    .is-valid,
+    .form-control.is-valid:focus {
+      border-color: #51cf66 !important;
+    }
+
+    .valid-feedback {
+      color: #51cf66 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <img src="https://butterfly-backup.readthedocs.io/en/latest/_static/bb_logo.svg" alt="" width="50" class="d-inline-block align-text-top">
+      <a class="navbar-brand" href="/">Butterfly Backup</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/backup">Backup</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/restore">Restore</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Other
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/export">Export</a></li>
+              <li><a class="dropdown-item" href="/archive">Archive</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <button class="theme-toggle-btn" id="theme-toggle" title="Toggle theme">
+            <i id="theme-icon" class="bi bi-moon"></i>
+          </button>
+          <ul class="nav navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {% bootstrap_messages %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-lg-start mt-5">
+    <div class="text-center p-3">
+      © 2025 Copyright:
+      <a href="https://matteoguadrini.github.io/Butterfly-Backup">Butterfly Backup</a>
+      <a href="https://github.com/MatteoGuadrini/Butterfly-Backup">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS (from django-bootstrap5) -->
+  {% bootstrap_javascript %}
+
+  <!-- Theme Switcher Script -->
+  <script>
+    const htmlElement = document.documentElement;
+    const themeLink = document.getElementById('theme-link');
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    const LIGHT_THEME_URL = 'https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/cyborg/bootstrap.min.css';
+    const DARK_THEME_URL = 'https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/cyborg/bootstrap.min.css';
+    const THEME_STORAGE_KEY = 'butterfly-backup-theme';
+    
+    // Initialize theme from localStorage or default to light (Cyborg)
+    function initializeTheme() {
+      let savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      
+      if (!savedTheme) {
+        // Default to light theme (Cyborg)
+        savedTheme = 'light';
+      }
+      
+      setTheme(savedTheme);
+    }
+    
+    // Set theme
+    function setTheme(theme) {
+      const isDark = theme === 'dark';
+      
+      // Update HTML data attribute
+      htmlElement.setAttribute('data-bs-theme', isDark ? 'dark' : 'light');
+      
+      // Update CSS link
+      themeLink.href = isDark ? DARK_THEME_URL : LIGHT_THEME_URL;
+      
+      // Update icon
+      themeIcon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon';
+      
+      // Save preference
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    }
+    
+    // Toggle theme
+    themeToggle.addEventListener('click', function() {
+      const currentTheme = htmlElement.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+    
+    // Initialize on page load
+    initializeTheme();
+  </script>
+</body>
+
+</html>

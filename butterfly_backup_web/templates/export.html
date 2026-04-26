@@ -1,18 +1,14 @@
-{% include "menu.html" %}
-
-{{ value|linebreaks }}
+{% extends "base.html" %}
 {% load bootstrap5 %}
 
-<div class="w-90 p-3" >
-    {% bootstrap_messages %}
+{% block content %}
 
-    {% block content %}
-        <form action="/export/" method="post">
-            {% csrf_token %}
-            {% bootstrap_form form field_class="col-md-2" %}
-            {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
-        </form>
-    {% endblock %}
+<div class="w-90 p-3" >
+    <form action="/export/" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form field_class="col-md-2" %}
+        {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
+    </form>
 
     {{ value|linebreaks }}
 
@@ -23,3 +19,5 @@
     Back
     </a>
 </div>
+
+{% endblock %}
