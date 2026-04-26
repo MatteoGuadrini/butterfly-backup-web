@@ -4,6 +4,8 @@
 
 This is a web interface to [Butterfly Backup](https://github.com/MatteoGuadrini/Butterfly-Backup) command line.
 
+<img src="https://i.ibb.co/nswFtgqc/Butterfly-Backup-04-26-2026-02-28-PM.png" style="width: 55vw; min-width: 750;" />
+
 ## Install Butterfly Backup Web
 
 To install locally, run this:
