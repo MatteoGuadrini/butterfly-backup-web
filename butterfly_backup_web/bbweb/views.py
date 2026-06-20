@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pathlib import Path
@@ -367,6 +367,36 @@ def archive(request):
     else:
         form = ArchiveForm()
     return render(request, "archive.html", {"form": form})
+
+
+@login_required
+def delete_backup(request, section):
+    if request.method == "POST":
+        # Compose mandatory command
+        cmds = [
+            "bb",
+            "config",
+            "--delete-backup",
+            str(CATALOG_PATH),
+            section,
+            "--force",
+        ]
+        # Start subprocess
+        try:
+            subprocess.run(
+                cmds,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            messages.success(
+                request,
+                f"Backup {section} deleted successfully.",
+            )
+        except subprocess.CalledProcessError as err:
+            messages.error(request, f"Delete error: {err}.")
+        except FileNotFoundError:
+            messages.error(request, "Butterfly Backup doesn't installed")
+    return redirect("home")
 
 
 # endregion
