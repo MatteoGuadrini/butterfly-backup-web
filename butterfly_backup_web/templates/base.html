@@ -285,7 +285,9 @@
             <i id="theme-icon" class="bi bi-moon"></i>
           </button>
           <ul class="nav navbar-nav">
+            {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
