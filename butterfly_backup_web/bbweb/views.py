@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -99,7 +99,42 @@ def logs(request, section):
             context[action] = open(log_file).read().replace("\n", "<br>")
     if not context:
         context["no_log"] = "There are no logs."
+    context["section"] = section
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def log_tail(request, section, log_type):
+    """API endpoint to fetch log content for tail-f behavior."""
+    config = get_catalog()
+    extension = ".log"
+
+    if log_type == "general":
+        log_file = os.path.join(
+            Path(config.get(section, "path", fallback="/")).parent,
+            f"general{extension}",
+        )
+    else:
+        log_file = os.path.join(
+            config.get(section, "path", fallback="/"), f"{log_type}{extension}"
+        )
+
+    # Get part of path
+    section_path = Path(log_file)
+    # Check if catalog root is the same
+    if log_type == "general":
+        section_root = section_path.parents[1]
+    else:
+        section_root = section_path.parents[2]
+    if str(section_root) != CATALOG_PATH:
+        new_root = Path(CATALOG_PATH)
+        log_file = new_root.joinpath(section_path.relative_to(section_root))
+    if os.path.isfile(log_file):
+        with open(log_file, "r") as f:
+            content = f.read()
+        return JsonResponse({"content": content.replace("\n", "<br>")})
+    else:
+        return JsonResponse({"content": "Log file not found"}, status=404)
 
 
 @login_required

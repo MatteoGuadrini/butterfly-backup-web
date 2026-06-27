@@ -25,6 +25,11 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("details/<str:section>", views.details, name="details"),
     path("details/<str:section>/logs", views.logs, name="logs"),
+    path(
+        "details/<str:section>/logs/<str:log_type>/tail",
+        views.log_tail,
+        name="log_tail",
+    ),
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
     path("export/", views.export, name="export"),
