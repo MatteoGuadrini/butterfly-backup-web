@@ -209,4 +209,111 @@ Then reload and restart the service:
 
       sudo systemctl daemon-reload
       sudo systemctl restart bbweb.service
- 
+
+Django Admin
+------------
+
+Butterfly Backup Web includes Django's built-in admin interface for managing users, groups, and other administrative tasks.
+
+Accessing the Admin Interface
+*****************************
+
+To access the Django admin interface:
+
+1. Navigate to ``/admin/`` on your web server (e.g., ``http://localhost:80/admin/`` or ``https://localhost:8443/admin/``)
+2. Log in with your superuser credentials created during installation
+
+Managing Users
+**************
+
+The admin interface allows you to manage user accounts with the following capabilities:
+
+- **Create new users**: Add new user accounts with appropriate permissions
+- **Edit existing users**: Modify user details, permissions, and group memberships
+- **Delete users**: Remove user accounts from the system
+- **Change passwords**: Reset or change user passwords
+
+Changing User Passwords
+========================
+
+To change a user's password via the admin interface:
+
+1. Navigate to the **Users** section in the admin panel
+2. Click on the user you want to modify
+3. Scroll to the "Password" field
+4. Click the "Change password" link
+5. Enter and confirm the new password
+6. Click "Change password" to save
+
+.. note::
+
+   Superusers can also change passwords using the command line:
+
+   .. code-block:: shell
+
+      bbweb changepassword <username>
+
+Managing Groups
+**************
+
+Django groups allow you to organize users and assign permissions to multiple users at once.
+
+Creating and Managing Groups
+=============================
+
+To manage groups in the admin interface:
+
+1. Navigate to the **Groups** section in the admin panel
+2. Click "Add group" to create a new group
+3. Enter a group name
+4. Select the permissions you want to assign to the group
+5. Click "Save" to create the group
+
+To add users to a group:
+
+1. Navigate to the **Users** section
+2. Click on the user you want to modify
+3. Scroll to the "Groups" field
+4. Select the group(s) you want to add the user to
+5. Click "Save" to apply the changes
+
+Permissions
+***********
+
+Django provides a flexible permission system that can be managed through the admin interface:
+
+- **View permissions**: See what permissions are available for each model
+- **Assign permissions**: Grant specific permissions to users or groups
+- **Custom permissions**: Create custom permissions for specific use cases
+
+Common permissions include:
+
+- **Add**: Permission to create new objects
+- **Change**: Permission to modify existing objects
+- **Delete**: Permission to remove objects
+- **View**: Permission to view objects (if enabled)
+
+Command Line User Management
+*****************************
+
+In addition to the web interface, you can manage users via command line:
+
+Create a superuser:
+
+.. code-block:: shell
+
+      bbweb createsuperuser
+
+Change a user's password:
+
+.. code-block:: shell
+
+      bbweb changepassword <username>
+
+Create a regular user (requires Django shell):
+
+.. code-block:: shell
+
+      bbweb shell
+      >>> from django.contrib.auth.models import User
+      >>> User.objects.create_user('username', 'email@example.com', 'password')
