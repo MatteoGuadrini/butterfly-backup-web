@@ -132,3 +132,37 @@ class ArchiveForm(forms.Form):
     )
     days = forms.IntegerField(label="Older then days", required=False)
     archive_path = forms.CharField(label="Archive path", max_length=100)
+
+
+class ConfigForm(forms.Form):
+    action = forms.ChoiceField(
+        choices=(
+            ("new", "Generate new configuration"),
+            ("remove", "Remove existing configuration"),
+            ("init", "Reset catalog file"),
+            ("delete-host", "Delete all entries for a single host"),
+            ("clean", "Clean corrupt catalog"),
+            ("delete-backup", "Delete specific backup ID"),
+        ),
+        label="Action",
+        required=True,
+    )
+    catalog_path = forms.CharField(
+        label="Catalog path",
+        max_length=255,
+        required=False,
+        initial=CATALOG_PATH,
+        help_text="Path to the catalog directory",
+    )
+    host = forms.CharField(
+        label="Host",
+        max_length=100,
+        required=False,
+        help_text="Hostname or IP address (for delete-host action)",
+    )
+    backup_id = forms.CharField(
+        label="Backup ID",
+        max_length=100,
+        required=False,
+        help_text="Backup ID to delete (for delete-backup action)",
+    )

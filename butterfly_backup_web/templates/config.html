@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block content %}
+
+<div class="w-90 p-3" >
+    <h2>Configuration Management</h2>
+    <p class="text-muted">Manage Butterfly Backup configuration using the bb config command features.</p>
+    
+    <form action="/config/" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form field_class="col-md-2" %}
+        {% buttons submit='Execute' reset="Cancel" %}{% endbuttons %}
+    </form>
+
+    <div class="mt-4">
+        <h5>Available Actions:</h5>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Generate new configuration</strong> - Create new SSH key configuration for backup operations
+            </li>
+            <li class="list-group-item">
+                <strong>Remove existing configuration</strong> - Remove the current SSH key configuration
+            </li>
+            <li class="list-group-item">
+                <strong>Reset catalog file</strong> - Reset the catalog file to default values
+            </li>
+            <li class="list-group-item">
+                <strong>Delete all entries for a single host</strong> - Remove all backup entries for a specific host
+            </li>
+            <li class="list-group-item">
+                <strong>Clean corrupt catalog</strong> - Clean the catalog if it is corrupt, setting default values
+            </li>
+            <li class="list-group-item">
+                <strong>Delete specific backup ID</strong> - Delete a specific backup entry from the catalog
+            </li>
+        </ul>
+    </div>
+
+    <a href="/" class="go-back mt-3 d-inline-block" data-bs-toggle="historyback">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+        Back
+    </a>
+</div>
+
+{% endblock %}

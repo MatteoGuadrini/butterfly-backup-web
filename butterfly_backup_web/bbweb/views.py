@@ -12,6 +12,7 @@ from .forms import (
     RestoreForm,
     ExportForm,
     ArchiveForm,
+    ConfigForm,
     CatalogError,
     get_catalog,
 )
@@ -432,6 +433,83 @@ def delete_backup(request, section):
         except FileNotFoundError:
             messages.error(request, "Butterfly Backup doesn't installed")
     return redirect("home")
+
+
+@login_required
+def config(request):
+    if request.method == "POST":
+        form = ConfigForm(request.POST)
+        if form.is_valid():
+            data = {
+                "action": form.cleaned_data["action"],
+                "catalog_path": form.cleaned_data["catalog_path"],
+                "host": form.cleaned_data["host"],
+                "backup_id": form.cleaned_data["backup_id"],
+            }
+
+            # Validate required fields based on action
+            if data["action"] == "delete-host" and not data["host"]:
+                messages.error(
+                    request, "Host field is required for delete-host action."
+                )
+                return render(request, "config.html", {"form": form})
+            elif data["action"] == "delete-backup" and not data["backup_id"]:
+                messages.error(
+                    request, "Backup ID field is required for delete-backup action."
+                )
+                return render(request, "config.html", {"form": form})
+            elif (
+                data["action"] in ["init", "clean", "delete-host", "delete-backup"]
+                and not data["catalog_path"]
+            ):
+                messages.error(
+                    request, "Catalog path field is required for this action."
+                )
+                return render(request, "config.html", {"form": form})
+
+            # Compose mandatory command
+            cmds = ["bb", "config"]
+
+            # Add action-specific flags
+            if data["action"] == "new":
+                cmds.append("--new")
+            elif data["action"] == "remove":
+                cmds.append("--remove")
+            elif data["action"] == "init":
+                cmds.extend(["--init", data["catalog_path"]])
+            elif data["action"] == "delete-host":
+                cmds.extend(["--delete-host", data["catalog_path"], data["host"]])
+            elif data["action"] == "clean":
+                cmds.extend(["--clean", data["catalog_path"]])
+            elif data["action"] == "delete-backup":
+                cmds.extend(
+                    ["--delete-backup", data["catalog_path"], data["backup_id"]]
+                )
+
+            # Always add force flag
+            cmds.append("--force")
+
+            # Start subprocess
+            try:
+                result = subprocess.run(
+                    cmds,
+                    capture_output=True,
+                    text=True,
+                )
+                if result.returncode == 0:
+                    messages.success(
+                        request,
+                        f"Config action '{data['action']}' completed successfully.",
+                    )
+                else:
+                    messages.error(request, f"Config action failed: {result.stderr}")
+            except subprocess.CalledProcessError as err:
+                messages.error(request, f"Config error: {err}.")
+            except FileNotFoundError:
+                messages.error(request, "Butterfly Backup doesn't installed")
+    else:
+        form = ConfigForm()
+    return render(request, "config.html", {"form": form})
 
 
 # endregion

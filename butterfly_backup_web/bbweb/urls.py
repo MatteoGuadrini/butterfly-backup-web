@@ -34,5 +34,6 @@ urlpatterns = [
     path("restore/", views.restore, name="restore"),
     path("export/", views.export, name="export"),
     path("archive/", views.archive, name="archive"),
+    path("config/", views.config, name="config"),
     path("delete/<str:section>", views.delete_backup, name="delete_backup"),
 ]
