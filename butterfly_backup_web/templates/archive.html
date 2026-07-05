@@ -4,15 +4,33 @@
 {% block content %}
 
 <div class="w-90 p-3" >
+    <h2>Archive Management</h2>
+    <p class="text-muted">Archive backup data for long-term storage using the bb archive command features.</p>
+    
     <form action="/archive/" method="post">
         {% csrf_token %}
         {% bootstrap_form form field_class="col-md-2" %}
         {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
     </form>
 
+    <div class="mt-4">
+        <h5>Archive Options:</h5>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Backup ID</strong> - Unique identifier of the backup to archive
+            </li>
+            <li class="list-group-item">
+                <strong>Archive Path</strong> - Destination path for archived data
+            </li>
+            <li class="list-group-item">
+                <strong>Days</strong> - Number of days to keep archive before cleanup
+            </li>
+        </ul>
+    </div>
+
     {{ value|linebreaks }}
 
-    <a href="/" class="go-back" data-bs-toggle="historyback">
+    <a href="/" class="go-back mt-3 d-inline-block" data-bs-toggle="historyback">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
