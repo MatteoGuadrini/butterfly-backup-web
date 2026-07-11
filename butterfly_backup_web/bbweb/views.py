@@ -3,6 +3,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 from pathlib import Path
 import subprocess
 import os
@@ -19,6 +20,22 @@ from .forms import (
 
 
 # region views
+def custom_login(request):
+    catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
+    if not os.path.exists(catalog_file):
+        messages.error(request, f"Catalog file not found: {catalog_file}")
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            from django.contrib.auth import login
+
+            login(request, form.get_user())
+            return redirect("/")
+    else:
+        form = AuthenticationForm(request)
+    return render(request, "registration/login.html", {"form": form})
+
+
 @login_required
 def home(request):
     backups = dict()

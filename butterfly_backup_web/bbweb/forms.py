@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from django import forms
 from bb import read_catalog
 from .settings import CATALOG_PATH
@@ -18,6 +19,12 @@ def get_catalog():
         raise CatalogError(f"catalog doesn't exists: {catalog_file}")
     config = read_catalog(catalog_file)
     return config
+
+
+def catalog_error_message():
+    catalog_file = os.path.join(CATALOG_PATH, ".catalog.cfg")
+    timestamp = datetime.now().strftime("%d/%b/%Y %H:%M:%S")
+    print(f'[{timestamp}] "Catalog file not found: {catalog_file}"')
 
 
 # endregion
@@ -71,15 +78,27 @@ class BackupForm(forms.Form):
 
 
 class RestoreForm(forms.Form):
-    _catalog = tuple(
-        reversed(
-            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
-        )
-    )
     computer = forms.CharField(label="Computer name or ip", max_length=100)
-    backup_id = forms.ChoiceField(
-        choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
-    )
+    backup_id = forms.ChoiceField(choices=[], label="Backup id", required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            _catalog = tuple(
+                reversed(
+                    [
+                        (bckid, bckid)
+                        for bckid in get_catalog()
+                        if bckid.lower() != "default"
+                    ]
+                )
+            )
+            self.fields["backup_id"].choices = _catalog
+            if _catalog:
+                self.fields["backup_id"].initial = _catalog[0]
+        except CatalogError:
+            catalog_error_message()
+
     root_dir = forms.CharField(label="Root directory", max_length=100, required=False)
     user = forms.CharField(label="Username", max_length=100, initial="root")
     port = forms.IntegerField(label="SSH port number", required=False)
@@ -102,15 +121,27 @@ class RestoreForm(forms.Form):
 
 
 class ExportForm(forms.Form):
-    _catalog = tuple(
-        reversed(
-            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
-        )
-    )
     export_path = forms.CharField(label="Export path", max_length=100)
-    backup_id = forms.ChoiceField(
-        choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
-    )
+    backup_id = forms.ChoiceField(choices=[], label="Backup id", required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            _catalog = tuple(
+                reversed(
+                    [
+                        (bckid, bckid)
+                        for bckid in get_catalog()
+                        if bckid.lower() != "default"
+                    ]
+                )
+            )
+            self.fields["backup_id"].choices = _catalog
+            if _catalog:
+                self.fields["backup_id"].initial = _catalog[0]
+        except CatalogError:
+            catalog_error_message()
+
     compress = forms.BooleanField(label="Compress", required=False)
     skip_error = forms.BooleanField(label="Skip error", required=False)
     checksum = forms.BooleanField(label="Checksum", required=False)
@@ -122,14 +153,26 @@ class ExportForm(forms.Form):
 
 
 class ArchiveForm(forms.Form):
-    _catalog = tuple(
-        reversed(
-            [(bckid, bckid) for bckid in get_catalog() if bckid.lower() != "default"]
-        )
-    )
-    backup_id = forms.ChoiceField(
-        choices=_catalog, label="Backup id", required=True, initial=_catalog[0]
-    )
+    backup_id = forms.ChoiceField(choices=[], label="Backup id", required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            _catalog = tuple(
+                reversed(
+                    [
+                        (bckid, bckid)
+                        for bckid in get_catalog()
+                        if bckid.lower() != "default"
+                    ]
+                )
+            )
+            self.fields["backup_id"].choices = _catalog
+            if _catalog:
+                self.fields["backup_id"].initial = _catalog[0]
+        except CatalogError:
+            catalog_error_message()
+
     days = forms.IntegerField(label="Older then days", required=False)
     archive_path = forms.CharField(label="Archive path", max_length=100)
 
