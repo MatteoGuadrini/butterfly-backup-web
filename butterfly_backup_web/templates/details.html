@@ -2,12 +2,151 @@
 
 {% block content %}
 <div class="w-90 p-3" >
+    <h4>Backup Details: {{ backup.id }}</h4>
     {{ value|linebreaks }}
 
-    {% for key, value in backup.items %}
-        <a><b>{{ key }}</b>: {{ value }}</a>
-        <br>
-    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>ID</strong></td>
+            <td>{{ backup.id }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Name</strong></td>
+            <td>{{ backup.name }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Type</strong></td>
+            <td>{{ backup.type }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>OS</strong></td>
+            <td>{{ backup.os }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Timestamp</strong></td>
+            <td>{{ backup.timestamp }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Start</strong></td>
+            <td>{{ backup.start }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>End</strong></td>
+            <td>{{ backup.end }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Status</strong></td>
+            <td>{{ backup.status }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Archived</strong></td>
+            <td>{{ backup.archived }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Cleaned</strong></td>
+            <td>{{ backup.cleaned }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Path</strong></td>
+            <td>{{ backup.path }}</td>
+          </tr>
+        </tbody>
+    </table>
 
     {% if backup.path %}
         {{ value|linebreaks }}

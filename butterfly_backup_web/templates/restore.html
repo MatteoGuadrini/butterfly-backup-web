@@ -13,6 +13,46 @@
         {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
     </form>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const backupSelect = document.getElementById('id_backup_id');
+        if (backupSelect && backupSelect.dataset.backupInfo) {
+            try {
+                const backupInfo = JSON.parse(backupSelect.dataset.backupInfo);
+                const backupMap = {};
+                
+                backupInfo.forEach(item => {
+                    backupMap[item[0]] = {
+                        name: item[2],
+                        status: item[3],
+                        timestamp: item[4],
+                        type: item[5],
+                        os: item[6]
+                    };
+                });
+
+                backupSelect.addEventListener('change', function() {
+                    const selectedId = this.value;
+                    const info = backupMap[selectedId];
+                    if (info) {
+                        this.title = `Name: ${info.name}\nStatus: ${info.status}\nTimestamp: ${info.timestamp}\nType: ${info.type}\nOS: ${info.os}`;
+                    }
+                });
+
+                // Set initial tooltip
+                if (backupSelect.value) {
+                    const initialInfo = backupMap[backupSelect.value];
+                    if (initialInfo) {
+                        backupSelect.title = `Name: ${initialInfo.name}\nStatus: ${initialInfo.status}\nTimestamp: ${initialInfo.timestamp}\nType: ${initialInfo.type}\nOS: ${initialInfo.os}`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error parsing backup info:', e);
+            }
+        }
+    });
+    </script>
+
     <div class="mt-4">
         <h5>Restore Options:</h5>
         <ul class="list-group">

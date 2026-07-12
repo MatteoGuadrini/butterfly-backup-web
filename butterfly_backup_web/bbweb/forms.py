@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 from django import forms
 from bb import read_catalog
@@ -84,18 +85,30 @@ class RestoreForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         try:
+            config = get_catalog()
             _catalog = tuple(
                 reversed(
                     [
-                        (bckid, bckid)
-                        for bckid in get_catalog()
+                        (
+                            bckid,
+                            bckid,
+                            config.get(bckid, "name", fallback=""),
+                            config.get(bckid, "status", fallback=""),
+                            config.get(bckid, "timestamp", fallback=""),
+                            config.get(bckid, "type", fallback=""),
+                            config.get(bckid, "os", fallback=""),
+                        )
+                        for bckid in config
                         if bckid.lower() != "default"
                     ]
                 )
             )
-            self.fields["backup_id"].choices = _catalog
+            self.fields["backup_id"].choices = [(item[0], item[0]) for item in _catalog]
+            self.fields["backup_id"].widget.attrs.update(
+                {"data-backup-info": json.dumps(_catalog)}
+            )
             if _catalog:
-                self.fields["backup_id"].initial = _catalog[0]
+                self.fields["backup_id"].initial = _catalog[0][0]
         except CatalogError:
             catalog_error_message()
 
@@ -127,18 +140,30 @@ class ExportForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         try:
+            config = get_catalog()
             _catalog = tuple(
                 reversed(
                     [
-                        (bckid, bckid)
-                        for bckid in get_catalog()
+                        (
+                            bckid,
+                            bckid,
+                            config.get(bckid, "name", fallback=""),
+                            config.get(bckid, "status", fallback=""),
+                            config.get(bckid, "timestamp", fallback=""),
+                            config.get(bckid, "type", fallback=""),
+                            config.get(bckid, "os", fallback=""),
+                        )
+                        for bckid in config
                         if bckid.lower() != "default"
                     ]
                 )
             )
-            self.fields["backup_id"].choices = _catalog
+            self.fields["backup_id"].choices = [(item[0], item[0]) for item in _catalog]
+            self.fields["backup_id"].widget.attrs.update(
+                {"data-backup-info": json.dumps(_catalog)}
+            )
             if _catalog:
-                self.fields["backup_id"].initial = _catalog[0]
+                self.fields["backup_id"].initial = _catalog[0][0]
         except CatalogError:
             catalog_error_message()
 
@@ -158,18 +183,30 @@ class ArchiveForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         try:
+            config = get_catalog()
             _catalog = tuple(
                 reversed(
                     [
-                        (bckid, bckid)
-                        for bckid in get_catalog()
+                        (
+                            bckid,
+                            bckid,
+                            config.get(bckid, "name", fallback=""),
+                            config.get(bckid, "status", fallback=""),
+                            config.get(bckid, "timestamp", fallback=""),
+                            config.get(bckid, "type", fallback=""),
+                            config.get(bckid, "os", fallback=""),
+                        )
+                        for bckid in config
                         if bckid.lower() != "default"
                     ]
                 )
             )
-            self.fields["backup_id"].choices = _catalog
+            self.fields["backup_id"].choices = [(item[0], item[0]) for item in _catalog]
+            self.fields["backup_id"].widget.attrs.update(
+                {"data-backup-info": json.dumps(_catalog)}
+            )
             if _catalog:
-                self.fields["backup_id"].initial = _catalog[0]
+                self.fields["backup_id"].initial = _catalog[0][0]
         except CatalogError:
             catalog_error_message()
 
