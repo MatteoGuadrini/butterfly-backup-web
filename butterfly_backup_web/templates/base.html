@@ -364,6 +364,28 @@
     // Initialize on page load
     initializeTheme();
   </script>
+
+  <!-- Back Link Script -->
+  <script>
+    // Handle back links with data-bs-toggle="historyback"
+    document.addEventListener('DOMContentLoaded', function() {
+      const backLinks = document.querySelectorAll('[data-bs-toggle="historyback"]');
+      
+      backLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Check if there's history to go back to
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            // If no history, fall back to homepage
+            window.location.href = '/';
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
