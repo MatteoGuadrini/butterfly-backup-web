@@ -29,6 +29,38 @@ A simple installation is done directly from the repository.
       cd butterfly-backup-web
       pip install . --upgrade
 
+Upgrade
+-------
+
+To upgrade Butterfly Backup Web to the latest version, use the following command:
+
+.. code-block:: shell
+
+      cd butterfly-backup-web
+      git pull
+      pip install . --upgrade
+
+After upgrading, it is recommended to run database migrations to ensure compatibility:
+
+.. code-block:: shell
+
+      bbweb migrate
+
+If you are using Docker, rebuild the image with the latest code:
+
+.. code-block:: shell
+
+      cd butterfly-backup-web
+      git pull
+      docker build . -t bbweb:latest
+      docker stop <container_id>
+      docker rm <container_id>
+      docker run -d -v /backup_catalog/:/tmp/backup/ -p 8080:8080 -e DJANGO_SUPERUSER_PASSWORD="MyComplexPassword0!" -e BB_CATALOG_PATH="/backup" localhost/bbweb:latest
+
+.. note::
+
+   Always backup your catalog and configuration files before performing an upgrade.
+
 Docker
 ------
 
@@ -317,3 +349,339 @@ Create a regular user (requires Django shell):
       bbweb shell
       >>> from django.contrib.auth.models import User
       >>> User.objects.create_user('username', 'email@example.com', 'password')
+
+User Views
+==========
+
+Butterfly Backup Web provides several views for managing backups through a web interface. Each view serves a specific purpose in the backup workflow.
+
+Home View
+*********
+
+The home view displays an overview of all backups in the catalog.
+
+**URL**: ``/`` or ``/home/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Displays a list of all backups from the catalog
+- Shows backup name, type, operating system, timestamp, and status
+- Provides quick access to backup details
+- Shows the current catalog path
+
+**Usage**:
+
+Navigate to the root URL (e.g., ``http://localhost:80/``) after logging in to see all available backups in your catalog.
+
+Login View
+**********
+
+The login view provides authentication for accessing the web interface.
+
+**URL**: ``/accounts/login/``
+
+**Access**: Public (no authentication required)
+
+**Features**:
+
+- Standard Django authentication form
+- Validates catalog file existence before login
+- Redirects to home page upon successful authentication
+- Displays error messages if catalog file is not found
+
+**Usage**:
+
+Enter your username and password to authenticate. If the catalog file is not found at the configured path, an error message will be displayed.
+
+Backup Details View
+*******************
+
+The details view shows comprehensive information about a specific backup.
+
+**URL**: ``/details/<section>/``
+
+**Access**: Requires login
+
+**Parameters**:
+
+- ``section``: The backup ID/section name from the catalog
+
+**Features**:
+
+- Displays complete backup metadata
+- Shows backup name, type, operating system, and timestamp
+- Displays start and end times
+- Shows backup status (running, completed, etc.)
+- Indicates if backup is archived or cleaned
+- Shows the backup path
+
+**Usage**:
+
+Click on any backup from the home view to view its detailed information. The backup ID is passed as a URL parameter.
+
+Backup Logs View
+****************
+
+The logs view displays log files associated with a specific backup.
+
+**URL**: ``/details/<section>/logs``
+
+**Access**: Requires login
+
+**Parameters**:
+
+- ``section``: The backup ID/section name from the catalog
+
+**Features**:
+
+- Displays general log file
+- Shows backup-specific logs (backup.log)
+- Shows restore-specific logs (restore.log)
+- Shows export-specific logs (export.log)
+- Formats log content with HTML line breaks
+- Displays message if no logs are available
+
+**Usage**:
+
+Navigate to the logs view for a specific backup to review all associated log files. Logs are displayed in a readable format with proper line breaks.
+
+Log Tail API View
+*****************
+
+The log tail view provides an API endpoint for real-time log monitoring.
+
+**URL**: ``/details/<section>/logs/<log_type>/tail``
+
+**Access**: Requires login
+
+**Parameters**:
+
+- ``section``: The backup ID/section name from the catalog
+- ``log_type``: Type of log (``general``, ``backup``, ``restore``, ``export``)
+
+**Features**:
+
+- Returns log content as JSON
+- Supports real-time log monitoring (tail-f behavior)
+- Returns 404 if log file is not found
+- Formats log content with HTML line breaks
+
+**Usage**:
+
+This API endpoint is typically used by JavaScript for real-time log updates. Make GET requests to fetch the latest log content.
+
+Backup Creation View
+********************
+
+The backup view allows users to create new backups through a web form.
+
+**URL**: ``/backup/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Form-based backup configuration
+- Supports multiple backup modes (full, incremental, differential, mirror)
+- Configurable data types (user, config, application, system, log)
+- OS type selection (unix, macos, windows)
+- Optional SSH port configuration
+- Retention policy settings (days and minimum number)
+- Advanced options: compression, error skipping, checksum, ACL preservation
+- Retry mechanism with wait time configuration
+- Executes ``bb backup`` command in background
+- Displays success/error messages
+
+**Form Fields**:
+
+- **Computer**: Target computer name or IP address
+- **User**: SSH username (default: root)
+- **Port**: SSH port number (optional)
+- **Mode**: Backup mode (full, incremental, differential, mirror)
+- **Data**: Data type to backup (user, config, application, system, log)
+- **OS type**: Operating system type (unix, macos, windows)
+- **Retention days**: Number of days to retain backups (optional)
+- **Retention minimum number**: Minimum number of backups to keep (optional)
+- **Compress**: Enable compression (optional)
+- **Skip error**: Continue on errors (optional)
+- **Checksum**: Verify checksums (optional)
+- **Preserve ACL**: Preserve access control lists (optional)
+- **Retry number**: Number of retry attempts (optional)
+- **Seconds of retry wait**: Wait time between retries (optional)
+
+**Usage**:
+
+Fill in the required fields and optional parameters as needed, then submit the form to start a backup. The backup runs in the background, and you can monitor progress through the logs view.
+
+Restore View
+************
+
+The restore view allows users to restore data from existing backups.
+
+**URL**: ``/restore/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Select backup from catalog dropdown
+- Configurable restore destination
+- Root directory specification
+- OS type selection
+- Optional SSH port configuration
+- Advanced options: compression, error skipping, checksum, ACL preservation
+- Mirror mode support
+- Retry mechanism with wait time configuration
+- Executes ``bb restore`` command in background
+- Displays success/error messages
+
+**Form Fields**:
+
+- **Computer**: Target computer name or IP address
+- **Backup id**: Select from available backups (populated from catalog)
+- **Root directory**: Root directory for restore (optional)
+- **User**: SSH username (default: root)
+- **Port**: SSH port number (optional)
+- **OS type**: Operating system type (unix, macos, windows)
+- **Compress**: Enable compression (optional)
+- **Skip error**: Continue on errors (optional)
+- **Checksum**: Verify checksums (optional)
+- **Preserve ACL**: Preserve access control lists (optional)
+- **Mirror**: Enable mirror mode (optional)
+- **Retry number**: Number of retry attempts (optional)
+- **Seconds of retry wait**: Wait time between retries (optional)
+
+**Usage**:
+
+Select a backup ID from the dropdown (populated from your catalog), configure restore parameters, and submit to start the restore process. Monitor progress through the logs view.
+
+Export View
+***********
+
+The export view allows users to export backups to external locations.
+
+**URL**: ``/export/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Select backup from catalog dropdown
+- Specify export destination path
+- Optional source deletion after export
+- Advanced options: compression, error skipping, checksum, ACL preservation
+- Mirror mode support
+- Retry mechanism with wait time configuration
+- Executes ``bb export`` command in background
+- Displays success/error messages
+
+**Form Fields**:
+
+- **Export path**: Destination path for exported backup
+- **Backup id**: Select from available backups (populated from catalog)
+- **Compress**: Enable compression (optional)
+- **Skip error**: Continue on errors (optional)
+- **Checksum**: Verify checksums (optional)
+- **Preserve ACL**: Preserve access control lists (optional)
+- **Mirror**: Enable mirror mode (optional)
+- **Delete source**: Delete source after export (optional)
+- **Retry number**: Number of retry attempts (optional)
+- **Seconds of retry wait**: Wait time between retries (optional)
+
+**Usage**:
+
+Select a backup ID, specify the export destination, configure optional parameters, and submit to start the export process.
+
+Archive View
+************
+
+The archive view allows users to archive old backups to long-term storage.
+
+**URL**: ``/archive/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Select backup from catalog dropdown
+- Specify archive destination path
+- Optional age-based filtering (older than X days)
+- Executes ``bb archive`` command in background
+- Displays success/error messages
+
+**Form Fields**:
+
+- **Backup id**: Select from available backups (populated from catalog)
+- **Archive path**: Destination path for archived backup
+- **Older then days**: Only archive backups older than specified days (optional)
+
+**Usage**:
+
+Select a backup to archive, specify the archive destination, optionally set an age filter, and submit to start the archiving process.
+
+Delete Backup View
+******************
+
+The delete backup view allows users to remove backups from the catalog.
+
+**URL**: ``/delete/<section>/``
+
+**Access**: Requires login
+
+**Parameters**:
+
+- ``section``: The backup ID/section name from the catalog
+
+**Features**:
+
+- Deletes specified backup from catalog
+- Uses ``--force`` flag to prevent confirmation prompts
+- Executes ``bb config --delete-backup`` command
+- Redirects to home view after deletion
+- Displays success/error messages
+
+**Usage**:
+
+This view is typically accessed via a delete button on the home or details view. The backup ID is passed as a URL parameter, and the deletion is performed immediately.
+
+Configuration View
+******************
+
+The config view provides advanced catalog management operations.
+
+**URL**: ``/config/``
+
+**Access**: Requires login
+
+**Features**:
+
+- Multiple configuration actions
+- Catalog initialization and management
+- Host and backup deletion
+- Catalog cleaning
+- Executes ``bb config`` command with various flags
+- Form validation based on selected action
+- Displays success/error messages
+
+**Form Fields**:
+
+- **Action**: Configuration action to perform
+  - ``new``: Generate new configuration
+  - ``remove``: Remove existing configuration
+  - ``init``: Reset catalog file
+  - ``delete-host``: Delete all entries for a single host
+  - ``clean``: Clean corrupt catalog
+  - ``delete-backup``: Delete specific backup ID
+- **Catalog path**: Path to the catalog directory (required for most actions)
+- **Host**: Hostname or IP address (required for delete-host action)
+- **Backup ID**: Backup ID to delete (required for delete-backup action)
+
+**Usage**:
+
+Select the desired action, fill in the required fields based on the action, and submit to perform the configuration operation. The form validates that required fields are provided for each action type.
+
+.. note::
+
+   All configuration actions use the ``--force`` flag to prevent interactive prompts.
