@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from pathlib import Path
 import subprocess
 import os
+import shutil
 from .settings import CATALOG_PATH
 from .forms import (
     BackupForm,
@@ -40,9 +41,19 @@ def custom_login(request):
 def home(request):
     backups = dict()
     template = loader.get_template("home.html")
+
+    # Calculate disk usage
+    disk_usage = shutil.disk_usage(CATALOG_PATH)
+    used_gb = disk_usage.used / (1024**3)
+    total_gb = disk_usage.total / (1024**3)
+    disk_percent = (disk_usage.used / disk_usage.total) * 100
+
     context = {
         "backups": backups,
         "catalog": CATALOG_PATH,
+        "disk_used": f"{used_gb:.1f}",
+        "disk_total": f"{total_gb:.0f}",
+        "disk_percent": disk_percent,
     }
     try:
         config = get_catalog()

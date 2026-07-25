@@ -5,6 +5,13 @@
 
 <div class="w-90 p-3" >
   <h4>Catalog: {{ catalog }}</h4>
+  {% if disk_percent >= 90 %}
+  <p class="text-danger">{{ disk_used }}/{{ disk_total }}GB of catalog occupied space</p>
+  {% elif disk_percent >= 80 %}
+  <p class="text-warning">{{ disk_used }}/{{ disk_total }}GB of catalog occupied space</p>
+  {% else %}
+  <p class="text-muted">{{ disk_used }}/{{ disk_total }}GB of catalog occupied space</p>
+  {% endif %}
   {{ value|linebreaks }}
 
   <table id="catalog" class="table table-striped">
