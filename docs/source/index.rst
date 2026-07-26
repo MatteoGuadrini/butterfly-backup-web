@@ -358,6 +358,8 @@ Butterfly Backup Web provides several views for managing backups through a web i
 Home View
 *********
 
+.. image:: https://i.ibb.co/0V9dbKBC/Butterfly-Backup-07-26-2026-09-24-AM.png
+
 The home view displays an overview of all backups in the catalog.
 
 **URL**: ``/`` or ``/home/``
@@ -378,6 +380,8 @@ Navigate to the root URL (e.g., ``http://localhost:80/``) after logging in to se
 Login View
 **********
 
+.. image:: https://i.ibb.co/mrt2yYfN/Butterfly-Backup-07-26-2026-09-11-AM.png
+
 The login view provides authentication for accessing the web interface.
 
 **URL**: ``/accounts/login/``
@@ -397,6 +401,8 @@ Enter your username and password to authenticate. If the catalog file is not fou
 
 Backup Details View
 *******************
+
+.. image:: https://i.ibb.co/gb1t7SDb/Butterfly-Backup-07-26-2026-09-18-AM.png
 
 The details view shows comprehensive information about a specific backup.
 
@@ -475,6 +481,8 @@ This API endpoint is typically used by JavaScript for real-time log updates. Mak
 Backup Creation View
 ********************
 
+.. image:: https://i.ibb.co/p69vpknK/Butterfly-Backup-07-26-2026-09-20-AM.png
+
 The backup view allows users to create new backups through a web form.
 
 **URL**: ``/backup/``
@@ -518,6 +526,8 @@ Fill in the required fields and optional parameters as needed, then submit the f
 Restore View
 ************
 
+.. image:: https://i.ibb.co/rGq0ZXqN/Butterfly-Backup-07-26-2026-09-20-AM-1.png
+
 The restore view allows users to restore data from existing backups.
 
 **URL**: ``/restore/``
@@ -560,6 +570,8 @@ Select a backup ID from the dropdown (populated from your catalog), configure re
 Export View
 ***********
 
+.. image:: https://i.ibb.co/BVqhqrH8/Butterfly-Backup-07-26-2026-09-21-AM.png
+
 The export view allows users to export backups to external locations.
 
 **URL**: ``/export/``
@@ -596,6 +608,8 @@ Select a backup ID, specify the export destination, configure optional parameter
 
 Archive View
 ************
+
+.. image:: https://i.ibb.co/DPJ5KCzz/Butterfly-Backup-07-26-2026-09-22-AM.png
 
 The archive view allows users to archive old backups to long-term storage.
 
@@ -648,6 +662,8 @@ This view is typically accessed via a delete button on the home or details view.
 
 Configuration View
 ******************
+
+.. image:: https://i.ibb.co/HfkxTJ4X/Butterfly-Backup-07-26-2026-09-23-AM.png
 
 The config view provides advanced catalog management operations.
 
