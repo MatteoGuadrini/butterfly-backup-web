@@ -4,7 +4,7 @@
 
 This is a web interface to [Butterfly Backup](https://github.com/MatteoGuadrini/Butterfly-Backup) command line.
 
-<img src="https://i.ibb.co/nswFtgqc/Butterfly-Backup-04-26-2026-02-28-PM.png" style="width: 55vw; min-width: 750;" />
+<img src="https://i.ibb.co/mrt2yYfN/Butterfly-Backup-07-26-2026-09-11-AM.png" style="width: 55vw; min-width: 750;" />
 
 ## Install Butterfly Backup Web
 
@@ -104,9 +104,11 @@ docker run -d -v bbweb:/tmp/backup/ -p 8080:8080 localhost/bbweb:latest
 - [x] Restore page
 - [x] Export page
 - [x] Archive page
+- [x] Config page
 - [x] Log-out
 - [x] SSL
-- [ ] Themes
+- [x] Themes
+- [ ] LDAP authentication
 
 ## Open source
 

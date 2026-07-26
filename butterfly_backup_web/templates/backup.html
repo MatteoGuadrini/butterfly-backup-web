@@ -4,15 +4,54 @@
 {% block content %}
 
 <div class="w-90 p-3" >
+    <h2>Backup Management</h2>
+    <p class="text-muted">Create and manage backups using the bb backup command features.</p>
+    
     <form action="/backup/" method="post">
         {% csrf_token %}
         {% bootstrap_form form field_class="col-md-2" %}
         {% buttons submit='Start' reset="Cancel" %}{% endbuttons %}
     </form>
 
+    <div class="mt-4">
+        <h5>Backup Options:</h5>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Computer</strong> - Target computer hostname or IP address for backup
+            </li>
+            <li class="list-group-item">
+                <strong>User</strong> - SSH username for connecting to the target computer
+            </li>
+            <li class="list-group-item">
+                <strong>Port</strong> - SSH port number (default: 22)
+            </li>
+            <li class="list-group-item">
+                <strong>Mode</strong> - Backup mode: ssh, local, or rsync
+            </li>
+            <li class="list-group-item">
+                <strong>Data</strong> - Source data path to backup
+            </li>
+            <li class="list-group-item">
+                <strong>Type</strong> - Backup type: full or incremental
+            </li>
+            <li class="list-group-item">
+                <strong>Retention</strong> - Set retention policy by days or number of backups
+            </li>
+            <li class="list-group-item">
+                <strong>Compression</strong> - Enable data compression during backup
+            </li>
+            <li class="list-group-item">
+                <strong>Checksum</strong> - Verify data integrity using checksums
+            </li>
+            <li class="list-group-item">
+                <strong>ACL</strong> - Preserve Access Control Lists during backup
+            </li>
+        </ul>
+    </div>
+
     {{ value|linebreaks }}
 
-    <a href="/" class="go-back" data-bs-toggle="historyback">
+    <a href="/" class="go-back mt-3 d-inline-block" data-bs-toggle="historyback">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>

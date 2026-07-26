@@ -6,10 +6,10 @@
         {{ no_log }}
         {{ value|linebreaks }}
         <a href="/" class="go-back" data-bs-toggle="historyback">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
             </svg>
-            Home
+        Back
         </a>
     {% else %}
         <div class="container">
@@ -17,21 +17,22 @@
                 {% if general %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="general">
-                        <button class="accordion-button collapsed" 
-                            type="button" 
+                        <button class="accordion-button collapsed"
+                            type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#general_collapse" 
-                            aria-expanded="false" 
-                            aria-controls="general_collapse">
+                            data-bs-target="#general_collapse"
+                            aria-expanded="false"
+                            aria-controls="general_collapse"
+                            data-log-type="general">
                             General log
                         </button>
                     </h2>
-                    <div id="general_collapse" 
-                            class="accordion-collapse collapse" 
+                    <div id="general_collapse"
+                            class="accordion-collapse collapse"
                             aria-labelledby="general"
-                            data-bs-parent="#general">
+                            data-bs-parent="#logs">
                         <div class="accordion-body">
-                            <code>
+                            <code id="general-content">
                                 {{ general | safe }}
                             </code>
                         </div>
@@ -42,21 +43,22 @@
                 {% if backup %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="backup">
-                        <button class="accordion-button collapsed" 
-                            type="button" 
+                        <button class="accordion-button collapsed"
+                            type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#backup_collapse" 
-                            aria-expanded="false" 
-                            aria-controls="backup_collapse">
+                            data-bs-target="#backup_collapse"
+                            aria-expanded="false"
+                            aria-controls="backup_collapse"
+                            data-log-type="backup">
                             Backup log
                         </button>
                     </h2>
-                    <div id="backup_collapse" 
-                            class="accordion-collapse collapse" 
+                    <div id="backup_collapse"
+                            class="accordion-collapse collapse"
                             aria-labelledby="backup"
-                            data-bs-parent="#backup">
+                            data-bs-parent="#logs">
                         <div class="accordion-body">
-                            <code>
+                            <code id="backup-content">
                                 {{ backup | safe }}
                             </code>
                         </div>
@@ -67,21 +69,22 @@
                 {% if restore %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="restore">
-                        <button class="accordion-button collapsed" 
-                            type="button" 
+                        <button class="accordion-button collapsed"
+                            type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#restore_collapse" 
-                            aria-expanded="false" 
-                            aria-controls="restore_collapse">
+                            data-bs-target="#restore_collapse"
+                            aria-expanded="false"
+                            aria-controls="restore_collapse"
+                            data-log-type="restore">
                             Restore log
                         </button>
                     </h2>
-                    <div id="restore_collapse" 
-                            class="accordion-collapse collapse" 
+                    <div id="restore_collapse"
+                            class="accordion-collapse collapse"
                             aria-labelledby="restore"
-                            data-bs-parent="#restore">
+                            data-bs-parent="#logs">
                         <div class="accordion-body">
-                            <code>
+                            <code id="restore-content">
                                 {{ restore | safe }}
                             </code>
                         </div>
@@ -93,20 +96,21 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="export">
                         <button class="accordion-button collapsed"
-                            type="button" 
+                            type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#export_collapse" 
-                            aria-expanded="false" 
-                            aria-controls="export_collapse">
+                            data-bs-target="#export_collapse"
+                            aria-expanded="false"
+                            aria-controls="export_collapse"
+                            data-log-type="export">
                             Export log
                         </button>
                     </h2>
-                    <div id="export_collapse" 
-                            class="accordion-collapse collapse" 
+                    <div id="export_collapse"
+                            class="accordion-collapse collapse"
                             aria-labelledby="export"
-                            data-bs-parent="#export">
+                            data-bs-parent="#logs">
                         <div class="accordion-body">
-                            <code>
+                            <code id="export-content">
                                 {{ export | safe }}
                             </code>
                         </div>
@@ -117,13 +121,100 @@
             {{ value|linebreaks }}
 
             <a href="/" class="go-back" data-bs-toggle="historyback">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
                 </svg>
-            Home
+            Back
             </a>
         </div>
     {% endif %}
 </div>
+
+<script>
+const section = "{{ section|escapejs }}";
+const pollIntervals = {};
+
+function startTailF(logType) {
+    const contentId = logType + '-content';
+    const contentElement = document.getElementById(contentId);
+
+    if (pollIntervals[logType]) {
+        clearInterval(pollIntervals[logType]);
+    }
+
+    // Initial fetch
+    fetchLogContent(logType, contentElement);
+
+    // Poll every 2 seconds
+    pollIntervals[logType] = setInterval(() => {
+        fetchLogContent(logType, contentElement);
+    }, 2000);
+}
+
+function stopTailF(logType) {
+    if (pollIntervals[logType]) {
+        clearInterval(pollIntervals[logType]);
+        delete pollIntervals[logType];
+    }
+}
+
+async function fetchLogContent(logType, contentElement) {
+    try {
+        const encodedSection = encodeURIComponent(section);
+        const url = `/details/${encodedSection}/logs/${logType}/tail`;
+        console.log('Fetching from:', url);
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            contentElement.innerHTML = data.content;
+            // Auto-scroll to bottom
+            const collapseElement = contentElement.closest('.accordion-collapse');
+            if (collapseElement) {
+                collapseElement.scrollTop = collapseElement.scrollHeight;
+            }
+        } else {
+            console.error('Response not OK:', response.status, response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching log content:', error);
+    }
+}
+
+// Listen for accordion show/hide events
+document.querySelectorAll('.accordion-button').forEach(button => {
+    const logType = button.getAttribute('data-log-type');
+    
+    button.addEventListener('click', function() {
+        const isExpanded = !this.classList.contains('collapsed');
+        
+        if (isExpanded) {
+            // Stop all other polls
+            Object.keys(pollIntervals).forEach(key => stopTailF(key));
+            // Start poll for this log
+            startTailF(logType);
+        } else {
+            stopTailF(logType);
+        }
+    });
+});
+
+// Bootstrap collapse event listeners
+document.querySelectorAll('.accordion-collapse').forEach(collapse => {
+    collapse.addEventListener('show.bs.collapse', function() {
+        const button = this.previousElementSibling.querySelector('.accordion-button');
+        const logType = button.getAttribute('data-log-type');
+        // Stop all other polls
+        Object.keys(pollIntervals).forEach(key => stopTailF(key));
+        // Start poll for this log
+        startTailF(logType);
+    });
+    
+    collapse.addEventListener('hide.bs.collapse', function() {
+        const button = this.previousElementSibling.querySelector('.accordion-button');
+        const logType = button.getAttribute('data-log-type');
+        stopTailF(logType);
+    });
+});
+</script>
 
 {% endblock %}

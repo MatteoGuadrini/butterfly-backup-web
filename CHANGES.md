@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-26
+
+### Added
+- Add delete button on specific backup
+- Add follow logs functionality
+- Add documentation part of Django admin
+- Add documentation end user guide
+- Add config page
+- Add tooltip on combobox with backup ids
+- Add disk catalog usage
+
+### Changed
+- View logout button only if user is authenticated
+- Adjust layout
+- Manage catalog error on web ui
+- Change back link with dynamically last page
+
+### Removed
+- None
+
+### Fixed
+- None
+
 ## [0.4.0] - 2026-04-26
 
 ### Added

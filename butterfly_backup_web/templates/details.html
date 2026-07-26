@@ -2,16 +2,155 @@
 
 {% block content %}
 <div class="w-90 p-3" >
+    <h4>Backup Details: {{ backup.id }}</h4>
     {{ value|linebreaks }}
 
-    {% for key, value in backup.items %}
-        <a><b>{{ key }}</b>: {{ value }}</a>
-        <br>
-    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>ID</strong></td>
+            <td>{{ backup.id }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Name</strong></td>
+            <td>{{ backup.name }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Type</strong></td>
+            <td>{{ backup.type }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>OS</strong></td>
+            <td>{{ backup.os }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Timestamp</strong></td>
+            <td>{{ backup.timestamp }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Start</strong></td>
+            <td>{{ backup.start }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>End</strong></td>
+            <td>{{ backup.end }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Status</strong></td>
+            <td>{{ backup.status }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Archived</strong></td>
+            <td>{{ backup.archived }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Cleaned</strong></td>
+            <td>{{ backup.cleaned }}</td>
+          </tr>
+          {% if backup.status == "23" or backup.status == "24" %}
+          <tr class="table-warning">
+          {% elif backup.status == "running" %}
+          <tr class="table-info">
+          {% elif backup.status != "0" %}
+          <tr class="table-danger">
+          {% else %}
+          <tr class="table-success">
+          {% endif %}
+            <td><strong>Path</strong></td>
+            <td>{{ backup.path }}</td>
+          </tr>
+        </tbody>
+    </table>
 
     {% if backup.path %}
         {{ value|linebreaks }}
-        <a href="{{ backup.id }}/logs" class="go-back" data-bs-toggle="historyback">
+        <a href="{{ backup.id }}/logs" class="go-back">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
                 <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
                 <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>

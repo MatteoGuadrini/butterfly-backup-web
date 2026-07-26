@@ -22,11 +22,19 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/login/", views.custom_login, name="login"),
     path("", views.home, name="home"),
     path("details/<str:section>", views.details, name="details"),
     path("details/<str:section>/logs", views.logs, name="logs"),
+    path(
+        "details/<str:section>/logs/<str:log_type>/tail",
+        views.log_tail,
+        name="log_tail",
+    ),
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
     path("export/", views.export, name="export"),
     path("archive/", views.archive, name="archive"),
+    path("config/", views.config, name="config"),
+    path("delete/<str:section>", views.delete_backup, name="delete_backup"),
 ]
