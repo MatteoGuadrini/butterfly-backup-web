@@ -33,6 +33,7 @@ urlpatterns = [
     ),
     path("backup/", views.backup, name="backup"),
     path("restore/", views.restore, name="restore"),
+    path("restore/<str:backup_id>", views.restore, name="restore_backup"),
     path("export/", views.export, name="export"),
     path("archive/", views.archive, name="archive"),
     path("config/", views.config, name="config"),

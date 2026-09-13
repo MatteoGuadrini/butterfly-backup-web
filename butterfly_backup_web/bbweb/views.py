@@ -247,7 +247,7 @@ def backup(request):
 
 
 @login_required
-def restore(request):
+def restore(request, backup_id=None):
     if request.method == "POST":
         form = RestoreForm(request.POST)
         if form.is_valid():
@@ -318,7 +318,18 @@ def restore(request):
             except FileNotFoundError:
                 messages.error(request, "Butterfly Backup doesn't installed")
     else:
-        form = RestoreForm()
+        initial_data = {}
+        if backup_id:
+            try:
+                config = get_catalog()
+                # Pre-populate form with backup information
+                initial_data = {
+                    "backup_id": backup_id,
+                    "type_": config.get(backup_id, "type", fallback="unix"),
+                }
+            except CatalogError as err:
+                messages.error(request, err)
+        form = RestoreForm(initial=initial_data)
     return render(request, "restore.html", {"form": form})
 
 
