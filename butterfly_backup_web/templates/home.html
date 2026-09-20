@@ -51,6 +51,9 @@
           <a href="{% url 'restore_backup' section %}" class="btn btn-success btn-sm" title="Restore">
             <i class="bi bi-arrow-counterclockwise"></i>
           </a>
+          <a href="{% url 'archive_backup' section %}" class="btn btn-warning btn-sm" title="Archive">
+            <i class="bi bi-box-seam"></i>
+          </a>
           <form action="{% url 'delete_backup' section %}" method="post" onsubmit="return confirm('Are you sure you want to delete this backup?');" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger btn-sm">

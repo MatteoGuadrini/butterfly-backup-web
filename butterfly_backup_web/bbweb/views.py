@@ -402,7 +402,7 @@ def export(request):
 
 
 @login_required
-def archive(request):
+def archive(request, backup_id=None):
     if request.method == "POST":
         form = ArchiveForm(request.POST)
         if form.is_valid():
@@ -440,7 +440,7 @@ def archive(request):
             except FileNotFoundError:
                 messages.error(request, "Butterfly Backup doesn't installed")
     else:
-        form = ArchiveForm()
+        form = ArchiveForm(initial={"backup_id": backup_id} if backup_id else None)
     return render(request, "archive.html", {"form": form})
 
 
