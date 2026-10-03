@@ -248,6 +248,110 @@
     .valid-feedback {
       color: #51cf66 !important;
     }
+
+    /* Footer styling for light and dark modes */
+    footer {
+      transition: background-color var(--transition-time), color var(--transition-time);
+    }
+
+    footer a {
+      transition: color var(--transition-time);
+    }
+
+    [data-bs-theme="light"] footer {
+      background-color: #060606 !important;
+      color: #ffffff !important;
+    }
+
+    [data-bs-theme="light"] footer a {
+      color: #ffffff !important;
+    }
+
+    [data-bs-theme="light"] footer a:hover {
+      color: #00d4ff !important;
+    }
+
+    [data-bs-theme="dark"] footer {
+      background-color: #282828 !important;
+      color: #e0e0e0 !important;
+    }
+
+    [data-bs-theme="dark"] footer a {
+      color: #e0e0e0 !important;
+    }
+
+    [data-bs-theme="dark"] footer a:hover {
+      color: #00d4ff !important;
+    }
+
+    /* Action buttons styling - darker than row colors */
+    .btn-success {
+      background-color: #1a7a37 !important;
+      border-color: #1a7a37 !important;
+      color: #ffffff !important;
+    }
+
+    .btn-success:hover {
+      background-color: #145a2a !important;
+      border-color: #145a2a !important;
+    }
+
+    .btn-warning {
+      background-color: #b78900 !important;
+      border-color: #b78900 !important;
+      color: #ffffff !important;
+    }
+
+    .btn-warning:hover {
+      background-color: #8a6600 !important;
+      border-color: #8a6600 !important;
+    }
+
+    .btn-danger {
+      background-color: #a71d2a !important;
+      border-color: #a71d2a !important;
+      color: #ffffff !important;
+    }
+
+    .btn-danger:hover {
+      background-color: #7f1520 !important;
+      border-color: #7f1520 !important;
+    }
+
+    /* Badge color overrides */
+    .badge {
+      color: #000000 !important;
+    }
+
+    .badge.bg-primary,
+    .badge-primary {
+      background-color: #00d4ff !important;
+      color: #000000 !important;
+    }
+
+    .badge.bg-success,
+    .badge-success {
+      background-color: #51cf66 !important;
+      color: #000000 !important;
+    }
+
+    .badge.bg-info,
+    .badge-info {
+      background-color: #22b8cf !important;
+      color: #000000 !important;
+    }
+
+    .badge.bg-warning,
+    .badge-warning {
+      background-color: #fcc419 !important;
+      color: #000000 !important;
+    }
+
+    .badge.bg-danger,
+    .badge-danger {
+      background-color: #ff6b6b !important;
+      color: #000000 !important;
+    }
   </style>
 </head>
 
