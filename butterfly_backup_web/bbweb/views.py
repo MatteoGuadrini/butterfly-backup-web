@@ -251,12 +251,27 @@ def restore(request, backup_id=None):
     if request.method == "POST":
         form = RestoreForm(request.POST)
         if form.is_valid():
+            # Check if backup is running
+            backup_id_val = form.cleaned_data["backup_id"]
+            try:
+                config = get_catalog()
+                status = config.get(backup_id_val, "status", fallback="running")
+                if status == "running":
+                    messages.error(
+                        request,
+                        "The backup operation must be exited before performing this action.",
+                    )
+                    return render(request, "restore.html", {"form": form})
+            except CatalogError as err:
+                messages.error(request, err)
+                return render(request, "restore.html", {"form": form})
+
             data = {
                 # Process the form data
                 "computer": form.cleaned_data["computer"],
                 "user": form.cleaned_data["user"],
                 "port": form.cleaned_data["port"],
-                "backup_id": form.cleaned_data["backup_id"],
+                "backup_id": backup_id_val,
                 "root_dir": form.cleaned_data["root_dir"],
                 "type_": form.cleaned_data["type_"],
                 "compress": form.cleaned_data["compress"],
@@ -322,6 +337,14 @@ def restore(request, backup_id=None):
         if backup_id:
             try:
                 config = get_catalog()
+                # Check if backup is running
+                status = config.get(backup_id, "status", fallback="running")
+                if status == "running":
+                    messages.error(
+                        request,
+                        "The backup operation must be exited before performing this action.",
+                    )
+                    return redirect("home")
                 # Pre-populate form with backup information
                 initial_data = {
                     "backup_id": backup_id,
@@ -406,9 +429,24 @@ def archive(request, backup_id=None):
     if request.method == "POST":
         form = ArchiveForm(request.POST)
         if form.is_valid():
+            # Check if backup is running
+            backup_id_val = form.cleaned_data["backup_id"]
+            try:
+                config = get_catalog()
+                status = config.get(backup_id_val, "status", fallback="running")
+                if status == "running":
+                    messages.error(
+                        request,
+                        "The backup operation must be exited before performing this action.",
+                    )
+                    return render(request, "archive.html", {"form": form})
+            except CatalogError as err:
+                messages.error(request, err)
+                return render(request, "archive.html", {"form": form})
+
             data = {
                 # Process the form data
-                "backup_id": form.cleaned_data["backup_id"],
+                "backup_id": backup_id_val,
                 "archive_path": form.cleaned_data["archive_path"],
                 "days": form.cleaned_data["days"],
             }
@@ -440,6 +478,19 @@ def archive(request, backup_id=None):
             except FileNotFoundError:
                 messages.error(request, "Butterfly Backup doesn't installed")
     else:
+        if backup_id:
+            try:
+                config = get_catalog()
+                # Check if backup is running
+                status = config.get(backup_id, "status", fallback="running")
+                if status == "running":
+                    messages.error(
+                        request,
+                        "The backup operation must be exited before performing this action.",
+                    )
+                    return redirect("home")
+            except CatalogError as err:
+                messages.error(request, err)
         form = ArchiveForm(initial={"backup_id": backup_id} if backup_id else None)
     return render(request, "archive.html", {"form": form})
 
@@ -447,6 +498,20 @@ def archive(request, backup_id=None):
 @login_required
 def delete_backup(request, section):
     if request.method == "POST":
+        # Check if backup is running
+        try:
+            config = get_catalog()
+            status = config.get(section, "status", fallback="running")
+            if status == "running":
+                messages.error(
+                    request,
+                    "The backup operation must be exited before performing this action.",
+                )
+                return redirect("home")
+        except CatalogError as err:
+            messages.error(request, err)
+            return redirect("home")
+
         # Compose mandatory command
         cmds = [
             "bb",
